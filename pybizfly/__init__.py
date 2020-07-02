@@ -1,2 +1,2 @@
-from .app import BizFlyClient
+from .client import BizFlyClient
 

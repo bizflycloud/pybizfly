@@ -7,3 +7,12 @@ __pycache__/
 # Pipenv
 Pipfile.lock
 Pipfile
+
+# Setting
+pybizfly/setting.py
+pybizfly/test.py
+
+# setup
+pybizfly.egg-info
+build
+dist
