@@ -1,9 +1,10 @@
 import requests
 
 from constants.api import DASHBOARD_URI, TOKEN_ENDPOINTS
+from utils.https import serialize_json
 
 
-class KeystoneAuthenticator(object):
+class Authenticator(object):
     def __init__(self, email: str, password: str):
         self.__email = email
         self.__password = password
@@ -14,7 +15,7 @@ class KeystoneAuthenticator(object):
                                  headers={'content-type': 'application/json'},
                                  json=self.__create_request_body())
         if response.status_code == 201:
-            return response.headers['x-subject-token']
+            return serialize_json(response.content).get('token')
         return ''
 
     def __create_request_body(self) -> dict:
@@ -23,7 +24,6 @@ class KeystoneAuthenticator(object):
             'password': self.__password
         }
 
-# from setting import KEYSTONE_AUTHTOKEN
-#
-# k = KeystoneAuthenticator(KEYSTONE_AUTHTOKEN)
+
+# k = KeystoneAuthenticator(email='dungpq@vccloud.vn', password='k`g`4Ib2N$Y6')
 # print(k.request())
