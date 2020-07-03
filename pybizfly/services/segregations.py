@@ -44,29 +44,6 @@ class Service(ABC):
             self._request_response = serialize_json(response.content)
         return self._request_response
 
-    def list(self, *args, **kwargs) -> 'Service':
-        self._request_method = GET
-        return self
-
-    def get(self, _id: str, *args, **kwargs) -> 'Service':
-        self._request_method = GET
-        self._add_sub_endpoint(_id)
-        return self
-
-    def post(self, *args, **kwargs) -> 'Service':
-        self._request_method = CREATE
-        return self
-
-    def patch(self, _id: str, *args, **kwargs) -> 'Service':
-        self._add_sub_endpoint(_id)
-        self._request_method = UPDATE
-        return self
-
-    def delete(self, _id: str, *args, **kwargs) -> 'Service':
-        self._add_sub_endpoint(_id)
-        self._request_method = DELETE
-        return self
-
     def _add_sub_endpoint(self, sub_endpoint: str):
         self.__sub_endpoints.append(sub_endpoint)
 
@@ -83,3 +60,43 @@ class Service(ABC):
     def __build_uri(self):
         base_uri = DASHBOARD_URI.format(self._create_endpoint())
         return build_uri(base_uri, sub_endpoints=self.__sub_endpoints, parameters=self.__parameters)
+
+
+# Interface segregation
+class Gettable(Service, ABC):
+    def get(self, _id: str, *args, **kwargs) -> Service:
+        self._request_method = GET
+        self._add_sub_endpoint(_id)
+        return self
+
+
+class Creatable(Service, ABC):
+    def create(self, *args, **kwargs) -> Service:
+        self._request_method = CREATE
+        return self
+
+
+class Patchable(Service, ABC):
+    def update(self, _id: str, *args, **kwargs) -> Service:
+        self._add_sub_endpoint(_id)
+        self._request_method = UPDATE
+        return self
+
+
+class Listable(Service, ABC):
+    def list(self, *args, **kwargs) -> Service:
+        self._request_method = GET
+        return self
+
+
+class Putable(Service, ABC):
+    def put(self, *args, **kwargs) -> Service:
+        self._request_method = PUT
+        return self
+
+
+class Deletable(Service, ABC):
+    def delete(self, _id: str, *args, **kwargs) -> Service:
+        self._add_sub_endpoint(_id)
+        self._request_method = DELETE
+        return self
