@@ -1,19 +1,18 @@
 from abc import ABC, abstractmethod
 
-import requests
-
 from constants.api import DASHBOARD_URI
 from constants.methods import *
-from utils.https import serialize_json, build_uri
+from utils.https import build_uri, HttpRequest
 
 
 class Service(ABC):
     def __init__(self, auth_token: str, email: str):
         self.auth_token = auth_token
         self.email = email
+        self.response_content = {}
+        self.response_code = None
         self._request_method = None
         self._request_body = {}
-        self._request_response = {}
         self.__sub_endpoints = []
         self.__parameters = []
 
@@ -31,18 +30,14 @@ class Service(ABC):
         common_request_kwargs = {
             'method': self._request_method,
             'url': url,
-            'headers': headers
+            'headers': headers,
+            'body': self._request_body
         }
 
-        if self._request_method != GET:
-            json_body = self._request_body
-            response = requests.request(**common_request_kwargs, json=json_body)
-        else:
-            response = requests.request(**common_request_kwargs)
+        http_request = HttpRequest(**common_request_kwargs)
+        self.response_code, self.response_content = http_request.execute(5)
 
-        if response.status_code == 200:
-            self._request_response = serialize_json(response.content)
-        return self._request_response
+        return self.response_content
 
     def _add_sub_endpoint(self, sub_endpoint: str):
         self.__sub_endpoints.append(sub_endpoint)

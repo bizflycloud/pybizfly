@@ -25,3 +25,10 @@ def validate_dict_list(dict_list: list) -> list:
         if isinstance(item, dict):
             validate_list.append(item)
     return validate_list
+
+
+def validate_firewall_rules() -> list:
+    """
+    pass
+    :return:
+    """

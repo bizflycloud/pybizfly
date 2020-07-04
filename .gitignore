@@ -11,6 +11,7 @@ Pipfile
 # Setting
 pybizfly/setting.py
 pybizfly/test.py
+test.py
 
 # setup
 pybizfly.egg-info
