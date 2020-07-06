@@ -1,11 +1,13 @@
 from constants.api import DASHBOARD_URI, TOKEN_ENDPOINTS
 from constants.methods import CREATE
-from utils.exceptions import InvalidIdentityException
 from utils.https import HttpRequest
 
 
 class Authenticator(object):
     def __init__(self, email: str, password: str):
+        self.token = ''
+        self.request_status = None
+        self.new_token_arrived = False
         self.__email = email
         self.__password = password
 
@@ -16,8 +18,13 @@ class Authenticator(object):
                                    headers={'content-type': 'application/json'},
                                    body=self.__create_request_body())
 
-        resp_code, resp_content = http_request.execute(5)
-        return resp_content.get('token')
+        self.request_status, resp_content = http_request.execute(5)
+        self.new_token_arrived = True
+        self.token = resp_content.get('token')
+        return self.token
+
+    def reset(self):
+        self.new_token_arrived = False
 
     def __create_request_body(self) -> dict:
         return {

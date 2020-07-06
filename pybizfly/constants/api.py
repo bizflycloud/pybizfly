@@ -2,7 +2,7 @@ DASHBOARD_URI = 'https://manage.bizflycloud.vn/iaas-cloud/api/{}'
 
 TOKEN_ENDPOINTS = 'token'
 
-ENDPOINTS = {
+RESOURCE_ENDPOINTS = {
     'OS_IMAGE': 'os-images',
     'FLAVOR': 'flavors',
     'CLOUD_SERVER': 'servers',

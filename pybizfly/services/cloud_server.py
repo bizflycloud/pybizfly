@@ -1,21 +1,65 @@
-from constants.api import ENDPOINTS
-from constants.services import *
-from services.segregations import *
-from utils.validators import validate_str_list
+from constants.api import RESOURCE_ENDPOINTS
+from constants.services import (REBUILD, RESIZE, GET_VNC, ADD_FIREWALL, CHANGE_TYPE, RESET_PASSWORD, HARD_REBOOT,
+                                SOFT_REBOOT, STOP, START, OS_IMAGE_TYPE, OS_VOLUME_TYPE, OS_SNAPSHOT_TYPE, HDD, SSD,
+                                PREMIUM, HN1, DEFAULT_FLAVOR)
+from services.segregations import Service, Listable, Gettable, Creatable, Deletable
+from utils.validators import (validate_str_list, validate_server_type, validate_disk_type, validate_availability_zone,
+                              validate_os_type, validate_data_disks)
 
 
 class CloudServer(Listable, Gettable, Creatable, Deletable):
+    def __init__(self, auth_token: str, email: str):
+        super(CloudServer, self).__init__(auth_token, email)
+        self._post_request_body = []
+
     def get(self, server_id: str, *args, **kwargs) -> Service:
         return super(CloudServer, self).get(server_id, *args, **kwargs)
 
-    def create(self, name: str, flavor: str, ssh_key: str,
-               os_type: str, os_id: str,
-               server_type: str = 'premium',
-               root_disk_size: int = 20, root_disk_type: str = 'HDD',
-               data_disk_size: int = 50, data_disk_type: str = 'SSD',
-               password: bool = True, availability_zone: str = 'HN1') -> Service:
-        self._request_body = self.__generate_create_cs_request_body(**locals())
-        return super(CloudServer, self).create()
+    def create(self, name: str, os_type: str, os_id: str,
+               flavor_name: str = DEFAULT_FLAVOR, ssh_key_name: str = None,
+               server_type: str = PREMIUM,
+               root_disk_size: int = 20, root_disk_type: str = SSD,
+               addition_data_disks: list = None,
+               password: bool = True, availability_zone: str = HN1) -> 'CloudServer':
+
+        validate_os_type(os_type)
+        validate_disk_type(root_disk_size)
+        validate_server_type(server_type)
+        validate_availability_zone(availability_zone)
+        if addition_data_disks:
+            validate_data_disks(addition_data_disks)
+
+        self._post_request_body.append(self.__generate_create_cs_request_body(**locals()))
+        self._request_body = self._post_request_body
+        super(CloudServer, self).create()
+        return self
+
+    def create_from_image(self, name, image_id: str,
+                          flavor_name: str = DEFAULT_FLAVOR, ssh_key_name: str = None,
+                          server_type: str = PREMIUM,
+                          root_disk_size: int = 20, root_disk_type: str = SSD,
+                          addition_data_disks: list = None,
+                          password: bool = True, availability_zone: str = HN1) -> 'CloudServer':
+        self.create(os_id=image_id, os_type=OS_IMAGE_TYPE, **self.__get_local(**locals()))
+        return self
+
+    def create_from_volume(self, name, volume_id: str,
+                           flavor_name: str = DEFAULT_FLAVOR, ssh_key_name: str = None,
+                           server_type: str = PREMIUM,
+                           root_disk_size: int = 20, root_disk_type: str = SSD,
+                           addition_data_disks: list = None,
+                           password: bool = True, availability_zone: str = HN1) -> 'CloudServer':
+        self.create(os_id=volume_id, os_type=OS_VOLUME_TYPE, **self.__get_local(**locals()))
+        return self
+
+    def create_from_snapshot(self, name, snapshot_id: str,
+                             flavor_name: str = DEFAULT_FLAVOR, ssh_key_name: str = None,
+                             server_type: str = PREMIUM,
+                             root_disk_size: int = 20, root_disk_type: str = SSD,
+                             addition_data_disks: list = None,
+                             password: bool = True, availability_zone: str = HN1) -> 'CloudServer':
+        self.create(os_id=snapshot_id, os_type=OS_SNAPSHOT_TYPE, **self.__get_local(**locals()))
+        return self
 
     def delete(self, server_id: str, delete_volumes: list = None, *args, **kwargs) -> Service:
         if delete_volumes:
@@ -101,10 +145,10 @@ class CloudServer(Listable, Gettable, Creatable, Deletable):
 
     @staticmethod
     def __generate_create_cs_request_body(**kwargs):
-        return {
-            "flavor": kwargs['flavor'],
+        base_data = {
+            "flavor": kwargs['flavor_name'],
             "name": kwargs['name'],
-            "os": {
+            'os': {
                 "id": kwargs['os_id'],
                 "type": kwargs['os_type']
             },
@@ -112,17 +156,35 @@ class CloudServer(Listable, Gettable, Creatable, Deletable):
                 "size": kwargs['root_disk_size'],
                 "type": kwargs['root_disk_type']
             },
-            "datadisks": [
-                {
-                    "size": kwargs['data_disk_size'],
-                    "type": kwargs['data_disk_type']
-                }
-            ],
-            "sshkey": kwargs['ssh_key'],
+
             "password": kwargs['password'],
             "type": kwargs['server_type'],
             "availability_zone": kwargs['availability_zone']
         }
+        # add ssh key if exist
+        ssh_key = kwargs.get('ssh_key_name')
+        if ssh_key:
+            base_data["sshkey"] = ssh_key
+
+        # add data_disks if exist
+        addition_data_disks = kwargs.get('addition_data_disks')
+        if addition_data_disks:
+            base_data['datadisks'] = addition_data_disks
+
+        return base_data
 
     def _create_endpoint(self) -> str:
-        return ENDPOINTS['CLOUD_SERVER']
+        return RESOURCE_ENDPOINTS['CLOUD_SERVER']
+
+    @staticmethod
+    def __get_local(**kwargs):
+        desired_keys = ['flavor_name', 'ssh_key_name', 'server_type', 'root_disk_size', 'root_disk_type',
+                        'data_disk_size', 'data_disk_type', 'password', 'availability_zone', 'name',
+                        'addition_data_disks']
+
+        new_kwargs = {}
+        for key in kwargs:
+            if key in desired_keys:
+                new_kwargs[key] = kwargs[key]
+
+        return new_kwargs

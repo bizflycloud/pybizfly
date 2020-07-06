@@ -1,8 +1,8 @@
-from constants.api import ENDPOINTS
-from services.segregations import Service, Gettable, Creatable, Listable, Deletable, Putable
+from constants.api import RESOURCE_ENDPOINTS
+from services.segregations import Service, Gettable, Creatable, Listable, Deletable, Puttable
 
 
-class Backup(Listable, Gettable, Creatable, Deletable, Putable):
+class Backup(Listable, Gettable, Creatable, Deletable, Puttable):
     def get(self, backup_id: str, *args, **kwargs) -> 'Service':
         return super(Backup, self).get(backup_id)
 
@@ -28,4 +28,4 @@ class Backup(Listable, Gettable, Creatable, Deletable, Putable):
         }
 
     def _create_endpoint(self) -> str:
-        return ENDPOINTS['BACKUP_CALENDAR']
+        return RESOURCE_ENDPOINTS['BACKUP_CALENDAR']

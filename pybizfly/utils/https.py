@@ -42,7 +42,7 @@ def _retry_request(num_retry: int, uri: str, method: str, **kwargs):
 
         response_status = response.status_code
         response_content = serialize_json(response.content)
-        if _should_retry(response_status):
+        if not _should_retry(response_status):
             break
 
     return response_status, response_content
@@ -53,7 +53,7 @@ def serialize_json(json_content) -> dict:
         return json.loads(json_content)
     except json.JSONDecodeError:
         # raise error
-        return {}
+        return {"messsage": str(json_content)}
 
 
 def build_uri(uri: str, sub_endpoints: list, parameters: list):

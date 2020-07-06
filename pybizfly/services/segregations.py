@@ -2,19 +2,21 @@ from abc import ABC, abstractmethod
 
 from constants.api import DASHBOARD_URI
 from constants.methods import *
+from utils.authenticator import Authenticator
 from utils.https import build_uri, HttpRequest
 
 
 class Service(ABC):
-    def __init__(self, auth_token: str, email: str):
-        self.auth_token = auth_token
-        self.email = email
+    def __init__(self, auth_token: str, email: str, authenticator: Authenticator = None):
         self.response_content = {}
         self.response_code = None
+        self.authenticator = authenticator
         self._request_method = None
         self._request_body = {}
         self.__sub_endpoints = []
         self.__parameters = []
+        self.__auth_token = auth_token
+        self.__email = email
 
     @abstractmethod
     def _create_endpoint(self) -> str:
@@ -27,18 +29,27 @@ class Service(ABC):
         if method and method in METHODS:
             self._request_method = method
 
-        common_request_kwargs = {
-            'method': self._request_method,
-            'url': url,
-            'headers': headers,
-            'body': self._request_body
-        }
-
-        http_request = HttpRequest(**common_request_kwargs)
+        # request 5 times maximum to server
+        http_request = HttpRequest(method=self._request_method, url=url, headers=headers, body=self._request_body)
         self.response_code, self.response_content = http_request.execute(5)
+
+        # If token expired, request a new one and send request again.
+        if self.response_code == 401:
+            self.authenticator.reset()
+            self.__auth_token = self.authenticator.request()
+
+            headers = self._create_headers()
+            http_request = HttpRequest(method=self._request_method, url=url, headers=headers, body=self._request_body)
+            self.response_code, self.response_content = http_request.execute(5)
+
+        # flush request body
+        self._request_body = {}
 
         return self.response_content
 
+    def set_auth_token(self, auth_token):
+        self.__auth_token = auth_token
+        
     def _add_sub_endpoint(self, sub_endpoint: str):
         self.__sub_endpoints.append(sub_endpoint)
 
@@ -47,8 +58,8 @@ class Service(ABC):
 
     def _create_headers(self):
         return {
-            'X-Auth-Token': self.auth_token,
-            'X-Tenant-Name': self.email,
+            'X-Auth-Token': self.__auth_token,
+            'X-Tenant-Name': self.__email,
             'Content-Type': 'application/json'
         }
 
@@ -84,7 +95,7 @@ class Listable(Service, ABC):
         return self
 
 
-class Putable(Service, ABC):
+class Puttable(Service, ABC):
     def put(self, *args, **kwargs) -> Service:
         self._request_method = PUT
         return self

@@ -1,8 +1,8 @@
-from constants.api import ENDPOINTS
+from constants.api import RESOURCE_ENDPOINTS
 from services.segregations import Listable
 
 
 class Image(Listable):
     # only list images
     def _create_endpoint(self) -> str:
-        return ENDPOINTS['OS_IMAGE']
+        return RESOURCE_ENDPOINTS['OS_IMAGE']

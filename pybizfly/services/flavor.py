@@ -1,8 +1,8 @@
-from constants.api import ENDPOINTS
+from constants.api import RESOURCE_ENDPOINTS
 from services.segregations import Listable
 
 
 class Flavor(Listable):
     # Only list flavors allow
     def _create_endpoint(self) -> str:
-        return ENDPOINTS['FLAVORS']
+        return RESOURCE_ENDPOINTS['FLAVOR']

@@ -1,4 +1,4 @@
-from constants.api import ENDPOINTS
+from constants.api import RESOURCE_ENDPOINTS
 from services.segregations import Service, Gettable, Listable, Creatable, Deletable
 
 
@@ -28,4 +28,4 @@ class Snapshot(Listable, Gettable, Creatable, Deletable):
         }
 
     def _create_endpoint(self) -> str:
-        return ENDPOINTS['SNAPSHOT']
+        return RESOURCE_ENDPOINTS['SNAPSHOT']
