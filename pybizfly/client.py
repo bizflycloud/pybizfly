@@ -19,46 +19,46 @@ class BizFlyClient(object):
 
     def cloud_server(self) -> CloudServer:
         cs = CloudServer(self.__token, self.__email)
-        self.subscribers.append(cs)
+        self._add_subscriber(cs)
         return cs
 
     def backup(self) -> Backup:
         ba = Backup(self.__token, self.__email)
-        self.subscribers.append(ba)
+        self._add_subscriber(ba)
         return ba
 
     def firewall(self) -> Firewall:
         fw = Firewall(self.__token, self.__email)
-        self.subscribers.append(fw)
+        self._add_subscriber(fw)
         return fw
 
     def flavor(self) -> Flavor:
         fv = Flavor(self.__token, self.__email)
-        self.subscribers.append(fv)
+        self._add_subscriber(fv)
         return fv
 
     def image(self) -> Image:
         im = Image(self.__token, self.__email)
-        self.subscribers.append(im)
+        self._add_subscriber(im)
         return im
 
     def key_pair(self) -> KeyPair:
         kp = KeyPair(self.__token, self.__email)
-        self.subscribers.append(kp)
+        self._add_subscriber(kp)
         return kp
 
     def snapshot(self) -> Snapshot:
         ss = Snapshot(self.__token, self.__email)
-        self.subscribers.append(ss)
+        self._add_subscriber(ss)
         return ss
 
     def volume(self) -> Volume:
         vl = Volume(self.__token, self.__email)
-        self.subscribers.append(vl)
+        self._add_subscriber(vl)
         return vl
 
     def _add_subscriber(self, service: Service):
-        self.subscribers.append(service)
+        self._add_subscriber(service)
         update_auth_token = self.__authenticator.new_token_arrived
         if update_auth_token:
             for subscriber in self.subscribers:
