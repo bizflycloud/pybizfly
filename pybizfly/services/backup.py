@@ -3,20 +3,66 @@ from services.segregations import Service, Gettable, Creatable, Listable, Deleta
 
 
 class Backup(Listable, Gettable, Creatable, Deletable, Puttable):
+    """
+    Backup resource service
+    Allow list all backups, get backup, create new backup, remove existed backup and overwrite a backup
+    """
+
     def get(self, backup_id: str, *args, **kwargs) -> 'Service':
+        """
+        Get backup
+        :param backup_id: Backup id
+        :param args:
+        :param kwargs:
+        :return:
+        """
         return super(Backup, self).get(backup_id)
 
     def create(self, resource_id: str,
                backup_at_time: int = 16, backup_frequency: int = 1440, backup_quantity: int = 2,
                *args, **kwargs) -> 'Service':
+        """
+        Create backup
+        :param resource_id:
+        :param backup_at_time: Create backup at specific hour every day
+        :param backup_frequency: Backup frequency
+        :param backup_quantity: Determine how many identical backup will be created
+        :param args:
+        :param kwargs:
+        :return:
+        """
         self._request_body = self.__generate_create_backup_request_body(**locals())
         return super(Backup, self).create()
 
     def delete(self, backup_id: str, *args, **kwargs) -> 'Service':
+        """
+        Delete backup
+        :param backup_id: Backup id
+        :param args:
+        :param kwargs:
+        :return:
+        """
         return super(Backup, self).delete(backup_id)
 
-    def put(self, *args, **kwargs) -> Service:
-        return super(Backup, self).put()
+    def put(self, backup_id: str,
+            backup_at_time: int = 16, backup_frequency: int = 1440, backup_quantity: int = 2,
+            *args, **kwargs) -> Service:
+        """
+        Overwrite of create an backup
+        :param backup_id: Backup id
+        :param backup_at_time: Create backup at specific hour every day
+        :param backup_frequency: Backup frequency
+        :param backup_quantity: Determine how many identical backup will be created
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        self._request_body = {
+            "hour": backup_at_time,
+            "frequency": backup_frequency,
+            "size": backup_quantity
+        }
+        return super(Backup, self).put(backup_id)
 
     @staticmethod
     def __generate_create_backup_request_body(**kwargs):

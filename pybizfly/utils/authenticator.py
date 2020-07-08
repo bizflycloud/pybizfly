@@ -1,5 +1,6 @@
 from constants.api import DASHBOARD_URI, TOKEN_ENDPOINTS
 from constants.methods import CREATE
+from utils.exceptions import AuthenticationException
 from utils.https import HttpRequest
 
 
@@ -19,6 +20,8 @@ class Authenticator(object):
                                    body=self.__create_request_body())
 
         self.request_status, resp_content = http_request.execute(5)
+        if self.request_status == 401:
+            raise AuthenticationException()
         self.new_token_arrived = True
         self.token = resp_content.get('token')
         return self.token

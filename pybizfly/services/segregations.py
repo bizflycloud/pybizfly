@@ -34,13 +34,11 @@ class Service(ABC):
         self.response_code, self.response_content = http_request.execute(5)
 
         # If token expired, request a new one and send request again.
-        if self.response_code == 401:
-            self.authenticator.reset()
+        if self.response_code == 401 and isinstance(self.authenticator, Authenticator):
             self.__auth_token = self.authenticator.request()
 
             headers = self._create_headers()
-            http_request = HttpRequest(method=self._request_method, url=url, headers=headers, body=self._request_body)
-            self.response_code, self.response_content = http_request.execute(5)
+            self.response_code, self.response_content = http_request.execute(5, headers=headers)
 
         # flush request body
         self._request_body = {}
@@ -49,7 +47,7 @@ class Service(ABC):
 
     def set_auth_token(self, auth_token):
         self.__auth_token = auth_token
-        
+
     def _add_sub_endpoint(self, sub_endpoint: str):
         self.__sub_endpoints.append(sub_endpoint)
 
@@ -96,7 +94,8 @@ class Listable(Service, ABC):
 
 
 class Puttable(Service, ABC):
-    def put(self, *args, **kwargs) -> Service:
+    def put(self, _id: str, *args, **kwargs) -> Service:
+        self._add_sub_endpoint(_id)
         self._request_method = PUT
         return self
 

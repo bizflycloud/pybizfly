@@ -1,6 +1,7 @@
 from constants.services import (CLOUD_SERVER_DISK_TYPES, AVAILABILITY_ZONES, CLOUD_SERVER_SERVER_TYPES,
                                 CLOUD_SERVER_OS_TYPES)
-from utils.exceptions import ExcludeValueException, InvalidTypeException, BizFlyClientException, InvalidDictException
+from constants.methods import METHODS
+from utils.exceptions import ExcludeValueException, InvalidTypeException, InvalidDictException
 
 
 def validate_str_list(str_list: list) -> list:
@@ -32,14 +33,23 @@ def validate_dict_list(dict_list: list) -> list:
     return validate_list
 
 
-def validate_firewall_rules() -> list:
+def validate_method(method: str):
     """
-    pass
+    Restrict allowed method
+    :param method:
     :return:
     """
+    if method not in METHODS:
+        raise ExcludeValueException('method', METHODS)
 
 
 def validate_disk_type(disk_type, name_to_call: str = None):
+    """
+    Validate disk type, must be in (SSD, HDD)
+    :param disk_type:
+    :param name_to_call: Name to call on raising exception
+    :return:
+    """
     if disk_type not in CLOUD_SERVER_DISK_TYPES:
         if not name_to_call:
             name_to_call = 'disk_type'
@@ -47,21 +57,41 @@ def validate_disk_type(disk_type, name_to_call: str = None):
 
 
 def validate_server_type(server_type):
+    """
+    Validate server type. Must be in (basic, premium, enterprise)
+    :param server_type:
+    :return:
+    """
     if server_type not in CLOUD_SERVER_SERVER_TYPES:
         raise ExcludeValueException('server_type', CLOUD_SERVER_SERVER_TYPES)
 
 
 def validate_availability_zone(availability_zone):
+    """
+    Validate availability zone. must be in (HN1, HN2)
+    :param availability_zone:
+    :return:
+    """
     if availability_zone not in AVAILABILITY_ZONES:
         raise ExcludeValueException('availability_zone', AVAILABILITY_ZONES)
 
 
 def validate_os_type(os_type):
+    """
+    Validate os type, must be in (image, snapshot, volume)
+    :param os_type:
+    :return:
+    """
     if os_type not in CLOUD_SERVER_OS_TYPES:
         raise ExcludeValueException('os_type', CLOUD_SERVER_OS_TYPES)
 
 
 def validate_data_disks(data_disks):
+    """
+    Validate list of addition data disks. Each item must include (type, size)
+    :param data_disks:
+    :return:
+    """
     count = 0
     for data_disk in data_disks:
         try:
@@ -76,6 +106,12 @@ def validate_data_disks(data_disks):
 
 
 def validate_firewall_bounds(bounds_rules, name_to_call: str = None):
+    """
+    Validate list of firewall rules. Each item must include (type, protocol, port_range, cidr)
+    :param bounds_rules:
+    :param name_to_call:
+    :return:
+    """
     count = 0
     if not name_to_call:
         name_to_call = 'bound_rules'

@@ -3,6 +3,9 @@ from services.segregations import Listable
 
 
 class Flavor(Listable):
-    # Only list flavors allow
+    """
+    Flavor resource listable service
+    Allow list all flavors
+    """
     def _create_endpoint(self) -> str:
         return RESOURCE_ENDPOINTS['FLAVOR']

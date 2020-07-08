@@ -4,12 +4,36 @@ from utils.validators import validate_str_list, validate_firewall_bounds
 
 
 class Firewall(Listable, Gettable, Creatable, Patchable, Deletable):
+    """
+    Firewall resource service
+    Allow list all firewalls, get firewall, create new firewall, update firewall and delete existed firewall
+    """
+
     def get(self, firewall_id: str, *args, **kwargs) -> Service:
+        """
+        Get firewall
+        :param firewall_id: Firewall id
+        :param args:
+        :param kwargs:
+        :return:
+        """
         return super(Firewall, self).get(firewall_id)
 
     def create(self, name: str,
                inbound_rules: list, outbound_rules: list,
                on_servers: list, *args, **kwargs) -> Service:
+        """
+        Create new firewall
+        :param name: Firewall name
+        :param inbound_rules: List of firewall inbound rules.
+        Each item must include (type, protocol, port_range, cidr)
+        :param outbound_rules: List of firewall outbound rules.
+        Each item must include (type, protocol, port_range, cidr)
+        :param on_servers: Set firewall on listed servers
+        :param args:
+        :param kwargs:
+        :return:
+        """
         validate_firewall_bounds(inbound_rules, 'inbound_rules')
         validate_firewall_bounds(outbound_rules, 'outbound_rules')
         validate_str_list(on_servers)
@@ -19,6 +43,18 @@ class Firewall(Listable, Gettable, Creatable, Patchable, Deletable):
     def update_rules(self, firewall_id: str,
                      inbound_rules: list = None, outbound_rules: list = None,
                      on_servers: list = None, *args, **kwargs) -> Service:
+        """
+        Update firewall
+        :param firewall_id: Firewall id
+        :param inbound_rules: List of firewall inbound rules.
+        Each item must include (type, protocol, port_range, 'cidr)
+        :param outbound_rules: List of firewall inbound rules.
+        Each item must include (type, protocol, port_range, cidr)
+        :param on_servers: Set firewall on listed servers
+        :param args:
+        :param kwargs:
+        :return:
+        """
         if inbound_rules:
             validate_firewall_bounds(inbound_rules)
         if outbound_rules:
@@ -29,9 +65,22 @@ class Firewall(Listable, Gettable, Creatable, Patchable, Deletable):
         return super(Firewall, self).update(firewall_id)
 
     def delete(self, firewall_id: str, *args, **kwargs) -> Service:
+        """
+        Delete firewall
+        :param firewall_id: Firewall id
+        :param args:
+        :param kwargs:
+        :return:
+        """
         return super(Firewall, self).delete(firewall_id)
 
     def delete_across_servers(self, firewall_id: str, servers: list) -> Service:
+        """
+        Remove firewall on listed servers
+        :param firewall_id: Firewall id
+        :param servers: Servers to remove firewall from
+        :return:
+        """
         service = super(Firewall, self).delete(firewall_id)
         self._add_sub_endpoint('servers')
 

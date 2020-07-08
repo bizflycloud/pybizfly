@@ -4,11 +4,16 @@ import time
 import requests
 
 from constants.methods import GET, METHODS
-from constants.response_codes import TOO_MANY_REQUEST, UNAUTHORIZED
-from utils.validators import validate_str_list, validate_dict_list
+from constants.response_codes import TOO_MANY_REQUEST
+from utils.validators import validate_str_list, validate_dict_list, validate_method
 
 
 def _should_retry(response_status: int) -> bool:
+    """
+    Determine that request with specific response status should be continued to be retried
+    :param response_status: HTTP request response status
+    :return:
+    """
     # Retry on 5xx
     if response_status >= 500:
         return True
@@ -21,9 +26,19 @@ def _should_retry(response_status: int) -> bool:
 
 
 def _retry_request(num_retry: int, uri: str, method: str, **kwargs):
+    """
+    Retry HTTP request in number of times.
+    :param num_retry:
+    :param uri:
+    :param method:
+    :param kwargs:
+    :return:
+    """
     response = None
     response_status = None
     response_content = None
+
+    validate_method(method)
     for retry_num in range(num_retry + 1):
         if retry_num > 0:
             # sleep 1 sec for each retry
@@ -49,6 +64,11 @@ def _retry_request(num_retry: int, uri: str, method: str, **kwargs):
 
 
 def serialize_json(json_content) -> dict:
+    """
+    Serialize json data to dict
+    :param json_content:
+    :return:
+    """
     try:
         return json.loads(json_content)
     except json.JSONDecodeError:
@@ -57,6 +77,13 @@ def serialize_json(json_content) -> dict:
 
 
 def build_uri(uri: str, sub_endpoints: list, parameters: list):
+    """
+    Build uri with sub endpoints and URL parameters
+    :param uri:
+    :param sub_endpoints:
+    :param parameters:
+    :return:
+    """
     parameters = validate_dict_list(parameters)
     sub_endpoints = validate_str_list(sub_endpoints)
     for sub_endpoint in sub_endpoints:
@@ -82,12 +109,18 @@ class HttpRequest(object):
         self.body = body
         self.headers = headers or {}
 
-    def execute(self, num_retry: int = 0):
+    def execute(self, num_retry: int = 0, url: str = '', method: str = None, body=None, headers=None):
         if self.method == GET:
             self.body = None
 
+        url = url or self.url
+        method = method or self.method
+        body = body or self.body
+        headers = headers or self.headers
+
+        validate_method(method)
         return _retry_request(num_retry,
-                              uri=self.url,
-                              method=self.method,
-                              json=self.body,
-                              headers=self.headers)
+                              uri=url,
+                              method=method,
+                              json=body,
+                              headers=headers)
