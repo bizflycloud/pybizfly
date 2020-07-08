@@ -1,5 +1,5 @@
-from constants.api import RESOURCE_ENDPOINTS
-from services.segregations import Service, Gettable, Creatable, Listable, Deletable, Puttable
+from pybizfly.constants.api import RESOURCE_ENDPOINTS
+from pybizfly.services.segregations import Service, Gettable, Creatable, Listable, Deletable, Puttable
 
 
 class Backup(Listable, Gettable, Creatable, Deletable, Puttable):

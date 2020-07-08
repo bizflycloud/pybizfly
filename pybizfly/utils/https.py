@@ -3,9 +3,9 @@ import time
 
 import requests
 
-from constants.methods import GET, METHODS
-from constants.response_codes import TOO_MANY_REQUEST
-from utils.validators import validate_str_list, validate_dict_list, validate_method
+from pybizfly.constants.methods import GET, METHODS
+from pybizfly.constants.response_codes import TOO_MANY_REQUEST
+from pybizfly.utils.validators import validate_str_list, validate_dict_list, validate_method
 
 
 def _should_retry(response_status: int) -> bool:

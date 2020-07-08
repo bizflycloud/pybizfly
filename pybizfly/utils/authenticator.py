@@ -1,7 +1,7 @@
-from constants.api import DASHBOARD_URI, TOKEN_ENDPOINTS
-from constants.methods import CREATE
-from utils.exceptions import AuthenticationException
-from utils.https import HttpRequest
+from pybizfly.constants.api import DASHBOARD_URI, TOKEN_ENDPOINTS
+from pybizfly.constants.methods import CREATE
+from pybizfly.utils.exceptions import AuthenticationException
+from pybizfly.utils.https import HttpRequest
 
 
 class Authenticator(object):

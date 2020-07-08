@@ -1,10 +1,10 @@
-from constants.api import RESOURCE_ENDPOINTS
-from constants.services import (REBUILD, RESIZE, GET_VNC, ADD_FIREWALL, CHANGE_TYPE, RESET_PASSWORD, HARD_REBOOT,
+from pybizfly.constants.api import RESOURCE_ENDPOINTS
+from pybizfly.constants.services import (REBUILD, RESIZE, GET_VNC, ADD_FIREWALL, CHANGE_TYPE, RESET_PASSWORD, HARD_REBOOT,
                                 SOFT_REBOOT, STOP, START, OS_IMAGE_TYPE, OS_VOLUME_TYPE, OS_SNAPSHOT_TYPE, SSD,
                                 PREMIUM, HN1, DEFAULT_FLAVOR)
-from services.segregations import Service, Listable, Gettable, Creatable, Deletable
-from utils.authenticator import Authenticator
-from utils.validators import (validate_str_list, validate_server_type, validate_disk_type, validate_availability_zone,
+from pybizfly.services.segregations import Service, Listable, Gettable, Creatable, Deletable
+from pybizfly.utils.authenticator import Authenticator
+from pybizfly.utils.validators import (validate_str_list, validate_server_type, validate_disk_type, validate_availability_zone,
                               validate_os_type, validate_data_disks)
 
 

@@ -1,5 +1,5 @@
-from constants.api import RESOURCE_ENDPOINTS
-from services.segregations import Listable
+from pybizfly.constants.api import RESOURCE_ENDPOINTS
+from pybizfly.services.segregations import Listable
 
 
 class Flavor(Listable):
