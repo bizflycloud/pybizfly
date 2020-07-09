@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
 
-from constants.api import DASHBOARD_URI
-from constants.methods import *
-from utils.authenticator import Authenticator
-from utils.https import build_uri, HttpRequest
+from pybizfly.constants.api import DASHBOARD_URI
+from pybizfly.constants.methods import *
+from pybizfly.utils.authenticator import Authenticator
+from pybizfly.utils.https import build_uri, HttpRequest
 
 
 class Service(ABC):

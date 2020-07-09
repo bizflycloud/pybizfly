@@ -1,6 +1,6 @@
-from services import *
-from services.segregations import Service
-from utils.authenticator import Authenticator
+from pybizfly.services import *
+from pybizfly.services.segregations import Service
+from pybizfly.utils.authenticator import Authenticator
 
 
 class BizFlyClient(object):
