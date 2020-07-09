@@ -19,7 +19,7 @@ Ví dụ này biểu diễn cách liệt kê các server của một tài khoả
     import pybizfly
 
     client = pybizfly.BizFlyClient(email='dungpq@vccloud.vn', password='123456')
-    servers = client.cloud_server().list().execute()
+    servers = client.cloud_server().list()
     
     print(servers)
 
@@ -28,6 +28,6 @@ Ví dụ này biểu diễn cách rebuild một server từ một image.
     import pybizfly
 
     client = pybizfly.BizFlyClient(email='dungpq@vccloud.vn', password='123456')
-    servers = client.cloud_server().rebuild(server_id='12as25asc74asd6asd', image_id='65as88as5d6as8dd2asd').execute()
+    servers = client.cloud_server().rebuild(server_id='12as25asc74asd6asd', image_id='65as88as5d6as8dd2asd')
     
     print(servers)
