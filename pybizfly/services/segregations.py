@@ -43,8 +43,8 @@ class Service(ABC):
             headers = self._create_headers()
             self.response_code, self.response_content = http_request.execute(5, headers=headers)
 
-        # flush request body
-        self._request_body = {}
+        # flush request data
+        self.__flush_request_data()
 
         return self.response_content
 
@@ -64,6 +64,12 @@ class Service(ABC):
     def __build_uri(self):
         base_uri = DASHBOARD_URI.format(self._create_endpoint())
         return build_uri(base_uri, sub_endpoints=self.__sub_endpoints, parameters=self.__parameters)
+
+    def __flush_request_data(self) -> bool:
+        self._request_body = {}
+        self.__sub_endpoints = []
+        self.__parameters = []
+        return True
 
 
 # Interface segregation
