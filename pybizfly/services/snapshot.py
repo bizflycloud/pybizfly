@@ -1,5 +1,5 @@
 from pybizfly.constants.api import RESOURCE_ENDPOINTS
-from pybizfly.services.segregations import Service, Gettable, Listable, Creatable, Deletable
+from pybizfly.services.segregations import Gettable, Listable, Creatable, Deletable
 
 
 class Snapshot(Listable, Gettable, Creatable, Deletable):

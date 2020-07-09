@@ -1,5 +1,5 @@
 from pybizfly.constants.api import RESOURCE_ENDPOINTS
-from pybizfly.services.segregations import Service, Listable, Creatable, Deletable
+from pybizfly.services.segregations import Listable, Creatable, Deletable
 
 
 class KeyPair(Listable, Creatable, Deletable):

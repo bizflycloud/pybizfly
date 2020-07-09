@@ -1,5 +1,5 @@
 from pybizfly.constants.api import RESOURCE_ENDPOINTS
-from pybizfly.services.segregations import Service, Listable, Gettable, Creatable, Patchable, Deletable
+from pybizfly.services.segregations import Listable, Gettable, Creatable, Patchable, Deletable
 from pybizfly.utils.validators import validate_str_list, validate_firewall_bounds
 
 

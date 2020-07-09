@@ -1,6 +1,6 @@
 from pybizfly.constants.api import RESOURCE_ENDPOINTS
 from pybizfly.constants.services import (RESTORE_VOLUME, DETACH, ATTACH, EXTEND, HN1, SSD)
-from pybizfly.services.segregations import Service, Gettable, Creatable, Listable, Deletable
+from pybizfly.services.segregations import Gettable, Creatable, Listable, Deletable
 from pybizfly.utils.exceptions import BizFlyClientException
 from pybizfly.utils.validators import validate_disk_type, validate_availability_zone
 
