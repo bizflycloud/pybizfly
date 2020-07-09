@@ -7,7 +7,7 @@ class KeyPair(Listable, Creatable, Deletable):
     Ssh key resource query
     Allow list all account ssh keys, create new ssh key and delete ssh key with specific name.
     """
-    def create(self, name: str, key_value: str = None, *args, **kwargs) -> 'Service':
+    def create(self, name: str, key_value: str = None, *args, **kwargs) -> dict:
         """
         Create new ssh key
         :param name: Ssh key name
@@ -19,7 +19,7 @@ class KeyPair(Listable, Creatable, Deletable):
         self._request_body = self.__generate_create_key_pair_request_body(**locals())
         return super(KeyPair, self).create()
 
-    def delete(self, name: str, *args, **kwargs) -> 'Service':
+    def delete(self, name: str, *args, **kwargs) -> dict:
         """
         Delete a ssh key based on its name
         :param name: Ssh key

@@ -10,7 +10,7 @@ class Volume(Listable, Gettable, Creatable, Deletable):
     Volume resource service
     Allow: list all volumes, get an individual volume, create new volume and delete existed volume
     """
-    def list(self, bootable: bool = False, *args, **kwargs) -> 'Service':
+    def list(self, bootable: bool = False, *args, **kwargs) -> list:
         """
         List all volumes
         :param bootable: If this is true, list all volumes that able to create cloud server
@@ -22,7 +22,7 @@ class Volume(Listable, Gettable, Creatable, Deletable):
             self._add_parameter(key='bootable', value='true')
         return super(Volume, self).list()
 
-    def get(self, volume_id: str, *args, **kwargs) -> 'Service':
+    def get(self, volume_id: str, *args, **kwargs) -> dict:
         """
         Get volume
         :param volume_id: Volume id
@@ -34,7 +34,7 @@ class Volume(Listable, Gettable, Creatable, Deletable):
 
     def create(self, name: str, volume_size: int = 20, snapshot_id: str = None,
                volume_type: str = SSD, availability_zone: str = HN1,
-               *args, **kwargs) -> 'Service':
+               *args, **kwargs) -> dict:
         """
         Create new volume
         :param name: Volume name
@@ -52,7 +52,7 @@ class Volume(Listable, Gettable, Creatable, Deletable):
         self._request_body = self.__generate_create_volume_request_body(**locals())
         return super(Volume, self).create()
 
-    def delete(self, volume_id: str, *args, **kwargs) -> 'Service':
+    def delete(self, volume_id: str, *args, **kwargs) -> dict:
         """
         Delete existed volume
         :param volume_id: Volume id
@@ -62,7 +62,7 @@ class Volume(Listable, Gettable, Creatable, Deletable):
         """
         return super(Volume, self).delete(volume_id)
 
-    def action(self, volume_id: str, request_body: dict = None) -> Service:
+    def action(self, volume_id: str, request_body: dict = None) -> dict:
         """
         Request action to an individual volume
         :param volume_id: Volume id
@@ -77,7 +77,7 @@ class Volume(Listable, Gettable, Creatable, Deletable):
             self._request_body = request_body
         return super(Volume, self).create()
 
-    def restore_volume(self, volume_id: str, snapshot_id: str) -> Service:
+    def restore_volume(self, volume_id: str, snapshot_id: str) -> dict:
         """
         Restore an volume based on a snapshot
         :param volume_id:  Volume id
@@ -90,7 +90,7 @@ class Volume(Listable, Gettable, Creatable, Deletable):
         }
         return self.action(volume_id)
 
-    def detach(self, volume_id: str) -> Service:
+    def detach(self, volume_id: str) -> dict:
         """
         Detach an volume
         :param volume_id: Volume id
@@ -101,7 +101,7 @@ class Volume(Listable, Gettable, Creatable, Deletable):
         }
         return self.action(volume_id)
 
-    def attach(self, volume_id: str, instance_uuid: str) -> Service:
+    def attach(self, volume_id: str, instance_uuid: str) -> dict:
         """
         Attach an volume
         :param volume_id: Volume id
@@ -114,7 +114,7 @@ class Volume(Listable, Gettable, Creatable, Deletable):
         }
         return self.action(volume_id)
 
-    def extend(self, volume_id: str, new_size: int) -> Service:
+    def extend(self, volume_id: str, new_size: int) -> dict:
         """
         Extend volume size with addition size in multiple of 10.
         :param volume_id: Volume id
@@ -131,11 +131,11 @@ class Volume(Listable, Gettable, Creatable, Deletable):
         return self.action(volume_id)
 
     @staticmethod
-    def __check_extend_size(size):
+    def __check_extend_size(size) -> bool:
         return size % 10 == 0
 
     @staticmethod
-    def __generate_create_volume_request_body(**kwargs):
+    def __generate_create_volume_request_body(**kwargs) -> dict:
         """
         Create request body for create volume request
         :param kwargs:

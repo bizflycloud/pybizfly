@@ -9,7 +9,7 @@ class Firewall(Listable, Gettable, Creatable, Patchable, Deletable):
     Allow list all firewalls, get firewall, create new firewall, update firewall and delete existed firewall
     """
 
-    def get(self, firewall_id: str, *args, **kwargs) -> Service:
+    def get(self, firewall_id: str, *args, **kwargs) -> dict:
         """
         Get firewall
         :param firewall_id: Firewall id
@@ -21,7 +21,7 @@ class Firewall(Listable, Gettable, Creatable, Patchable, Deletable):
 
     def create(self, name: str,
                inbound_rules: list, outbound_rules: list,
-               on_servers: list, *args, **kwargs) -> Service:
+               on_servers: list, *args, **kwargs) -> dict:
         """
         Create new firewall
         :param name: Firewall name
@@ -40,9 +40,9 @@ class Firewall(Listable, Gettable, Creatable, Patchable, Deletable):
         self._request_body = self.__generate_create_firewall_request_body(**locals())
         return super(Firewall, self).create()
 
-    def update_rules(self, firewall_id: str,
-                     inbound_rules: list = None, outbound_rules: list = None,
-                     on_servers: list = None, *args, **kwargs) -> Service:
+    def update(self, firewall_id: str,
+               inbound_rules: list = None, outbound_rules: list = None,
+               on_servers: list = None, *args, **kwargs) -> dict:
         """
         Update firewall
         :param firewall_id: Firewall id
@@ -64,7 +64,7 @@ class Firewall(Listable, Gettable, Creatable, Patchable, Deletable):
         self._request_body = self.__generate_update_firewall_request_body(**locals())
         return super(Firewall, self).update(firewall_id)
 
-    def delete(self, firewall_id: str, *args, **kwargs) -> Service:
+    def delete(self, firewall_id: str, *args, **kwargs) -> dict:
         """
         Delete firewall
         :param firewall_id: Firewall id
@@ -74,21 +74,20 @@ class Firewall(Listable, Gettable, Creatable, Patchable, Deletable):
         """
         return super(Firewall, self).delete(firewall_id)
 
-    def delete_across_servers(self, firewall_id: str, servers: list) -> Service:
+    def delete_across_servers(self, firewall_id: str, servers: list) -> dict:
         """
         Remove firewall on listed servers
         :param firewall_id: Firewall id
         :param servers: Servers to remove firewall from
         :return:
         """
-        service = super(Firewall, self).delete(firewall_id)
         self._add_sub_endpoint('servers')
 
         servers = validate_str_list(servers)
         self._request_body = {
             'servers': servers
         }
-        return service
+        return super(Firewall, self).delete(firewall_id)
 
     @staticmethod
     def __generate_create_firewall_request_body(**kwargs) -> dict:

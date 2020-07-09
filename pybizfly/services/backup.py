@@ -8,7 +8,7 @@ class Backup(Listable, Gettable, Creatable, Deletable, Puttable):
     Allow list all backups, get backup, create new backup, remove existed backup and overwrite a backup
     """
 
-    def get(self, backup_id: str, *args, **kwargs) -> 'Service':
+    def get(self, backup_id: str, *args, **kwargs) -> dict:
         """
         Get backup
         :param backup_id: Backup id
@@ -20,7 +20,7 @@ class Backup(Listable, Gettable, Creatable, Deletable, Puttable):
 
     def create(self, resource_id: str,
                backup_at_time: int = 16, backup_frequency: int = 1440, backup_quantity: int = 2,
-               *args, **kwargs) -> 'Service':
+               *args, **kwargs) -> dict:
         """
         Create backup
         :param resource_id:
@@ -34,7 +34,7 @@ class Backup(Listable, Gettable, Creatable, Deletable, Puttable):
         self._request_body = self.__generate_create_backup_request_body(**locals())
         return super(Backup, self).create()
 
-    def delete(self, backup_id: str, *args, **kwargs) -> 'Service':
+    def delete(self, backup_id: str, *args, **kwargs) -> dict:
         """
         Delete backup
         :param backup_id: Backup id
@@ -46,7 +46,7 @@ class Backup(Listable, Gettable, Creatable, Deletable, Puttable):
 
     def put(self, backup_id: str,
             backup_at_time: int = 16, backup_frequency: int = 1440, backup_quantity: int = 2,
-            *args, **kwargs) -> Service:
+            *args, **kwargs) -> dict:
         """
         Overwrite of create an backup
         :param backup_id: Backup id

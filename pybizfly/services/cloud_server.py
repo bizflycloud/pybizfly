@@ -1,11 +1,13 @@
 from pybizfly.constants.api import RESOURCE_ENDPOINTS
-from pybizfly.constants.services import (REBUILD, RESIZE, GET_VNC, ADD_FIREWALL, CHANGE_TYPE, RESET_PASSWORD, HARD_REBOOT,
-                                SOFT_REBOOT, STOP, START, OS_IMAGE_TYPE, OS_VOLUME_TYPE, OS_SNAPSHOT_TYPE, SSD,
-                                PREMIUM, HN1, DEFAULT_FLAVOR)
+from pybizfly.constants.services import (REBUILD, RESIZE, GET_VNC, ADD_FIREWALL, CHANGE_TYPE, RESET_PASSWORD,
+                                         HARD_REBOOT,
+                                         SOFT_REBOOT, STOP, START, OS_IMAGE_TYPE, OS_VOLUME_TYPE, OS_SNAPSHOT_TYPE, SSD,
+                                         PREMIUM, HN1, DEFAULT_FLAVOR)
 from pybizfly.services.segregations import Service, Listable, Gettable, Creatable, Deletable
 from pybizfly.utils.authenticator import Authenticator
-from pybizfly.utils.validators import (validate_str_list, validate_server_type, validate_disk_type, validate_availability_zone,
-                              validate_os_type, validate_data_disks)
+from pybizfly.utils.validators import (validate_str_list, validate_server_type, validate_disk_type,
+                                       validate_availability_zone,
+                                       validate_os_type, validate_data_disks)
 
 
 class CloudServer(Listable, Gettable, Creatable, Deletable):
@@ -18,7 +20,7 @@ class CloudServer(Listable, Gettable, Creatable, Deletable):
         super(CloudServer, self).__init__(auth_token, email, authenticator)
         self._post_request_body = []
 
-    def get(self, server_id: str, *args, **kwargs) -> Service:
+    def get(self, server_id: str, *args, **kwargs) -> dict:
         """
         Get cloud server by server_id
         :param server_id: Cloud server id
@@ -33,7 +35,7 @@ class CloudServer(Listable, Gettable, Creatable, Deletable):
                server_type: str = PREMIUM,
                root_disk_size: int = 20, root_disk_type: str = SSD,
                addition_data_disks: list = None,
-               password: bool = True, availability_zone: str = HN1) -> 'CloudServer':
+               password: bool = True, availability_zone: str = HN1) -> dict:
         """
         Create an cloud server.
         Stack create methods to create equivalent amount of cloud servers.
@@ -59,15 +61,14 @@ class CloudServer(Listable, Gettable, Creatable, Deletable):
 
         self._post_request_body.append(self.__generate_create_cs_request_body(**locals()))
         self._request_body = self._post_request_body
-        super(CloudServer, self).create()
-        return self
+        return super(CloudServer, self).create()
 
     def create_from_image(self, name, image_id: str,
                           flavor_name: str = DEFAULT_FLAVOR, ssh_key_name: str = None,
                           server_type: str = PREMIUM,
                           root_disk_size: int = 20, root_disk_type: str = SSD,
                           addition_data_disks: list = None,
-                          password: bool = True, availability_zone: str = HN1) -> 'CloudServer':
+                          password: bool = True, availability_zone: str = HN1) -> dict:
         """
         Create cloud server based on an image
         Stack create methods to create equivalent amount of cloud servers.
@@ -83,15 +84,14 @@ class CloudServer(Listable, Gettable, Creatable, Deletable):
         :param availability_zone: Cloud server availability zones, must be in (HN1, HN2)
         :return:
         """
-        self.create(os_id=image_id, os_type=OS_IMAGE_TYPE, **self.__get_local(**locals()))
-        return self
+        return self.create(os_id=image_id, os_type=OS_IMAGE_TYPE, **self.__get_local(**locals()))
 
     def create_from_volume(self, name, volume_id: str,
                            flavor_name: str = DEFAULT_FLAVOR, ssh_key_name: str = None,
                            server_type: str = PREMIUM,
                            root_disk_size: int = 20, root_disk_type: str = SSD,
                            addition_data_disks: list = None,
-                           password: bool = True, availability_zone: str = HN1) -> 'CloudServer':
+                           password: bool = True, availability_zone: str = HN1) -> dict:
         """
         Create cloud server based on a volume
         Stack create methods to create equivalent amount of cloud servers.
@@ -107,15 +107,14 @@ class CloudServer(Listable, Gettable, Creatable, Deletable):
         :param availability_zone: Cloud server availability zones, must be in (HN1, HN2)
         :return:
         """
-        self.create(os_id=volume_id, os_type=OS_VOLUME_TYPE, **self.__get_local(**locals()))
-        return self
+        return self.create(os_id=volume_id, os_type=OS_VOLUME_TYPE, **self.__get_local(**locals()))
 
     def create_from_snapshot(self, name, snapshot_id: str,
                              flavor_name: str = DEFAULT_FLAVOR, ssh_key_name: str = None,
                              server_type: str = PREMIUM,
                              root_disk_size: int = 20, root_disk_type: str = SSD,
                              addition_data_disks: list = None,
-                             password: bool = True, availability_zone: str = HN1) -> 'CloudServer':
+                             password: bool = True, availability_zone: str = HN1) -> dict:
         """
         Create cloud server based on a snapshot
         Stack create methods to create equivalent amount of cloud servers.
@@ -131,10 +130,9 @@ class CloudServer(Listable, Gettable, Creatable, Deletable):
         :param availability_zone: Cloud server availability zones, must be in (HN1, HN2)
         :return:
         """
-        self.create(os_id=snapshot_id, os_type=OS_SNAPSHOT_TYPE, **self.__get_local(**locals()))
-        return self
+        return self.create(os_id=snapshot_id, os_type=OS_SNAPSHOT_TYPE, **self.__get_local(**locals()))
 
-    def delete(self, server_id: str, delete_volumes: list = None, *args, **kwargs) -> Service:
+    def delete(self, server_id: str, delete_volumes: list = None, *args, **kwargs) -> dict:
         """
         Delete a cloud server
         :param server_id: Cloud server id
@@ -150,7 +148,7 @@ class CloudServer(Listable, Gettable, Creatable, Deletable):
             }
         return super(CloudServer, self).delete(server_id)
 
-    def action(self, server_id: str, request_body: dict = None) -> Service:
+    def action(self, server_id: str, request_body: dict = None) -> dict:
         """
         Send action to an individual cloud server
         :param server_id: Cloud server id
@@ -165,7 +163,7 @@ class CloudServer(Listable, Gettable, Creatable, Deletable):
             self._request_body = request_body
         return super(CloudServer, self).create()
 
-    def rebuild(self, server_id: str, image_id: str) -> Service:
+    def rebuild(self, server_id: str, image_id: str) -> dict:
         """
         Rebuild a cloud server based on an image
         :param server_id: Cloud server id
@@ -178,7 +176,7 @@ class CloudServer(Listable, Gettable, Creatable, Deletable):
         }
         return self.action(server_id)
 
-    def resize(self, server_id: str, flavor_name: str) -> Service:
+    def resize(self, server_id: str, flavor_name: str) -> dict:
         """
         Resize a cloud server based on flavor
         :param server_id: Cloud server id
@@ -191,7 +189,7 @@ class CloudServer(Listable, Gettable, Creatable, Deletable):
         }
         return self.action(server_id)
 
-    def get_vnc(self, server_id: str, vnc_type: str) -> Service:
+    def get_vnc(self, server_id: str, vnc_type: str) -> dict:
         """
         Get cloud server vnd
         :param server_id:
@@ -204,7 +202,7 @@ class CloudServer(Listable, Gettable, Creatable, Deletable):
         }
         return self.action(server_id)
 
-    def add_firewall(self, server_id: str, firewall_id: str) -> Service:
+    def add_firewall(self, server_id: str, firewall_id: str) -> dict:
         """
         Add a firewall to cloud server
         :param server_id: Cloud server id
@@ -217,7 +215,7 @@ class CloudServer(Listable, Gettable, Creatable, Deletable):
         }
         return self.action(server_id)
 
-    def change_type(self, server_id: str, new_type: str) -> Service:
+    def change_type(self, server_id: str, new_type: str) -> dict:
         """
         Change cloud server type
         :param server_id: Cloud server id
@@ -231,7 +229,7 @@ class CloudServer(Listable, Gettable, Creatable, Deletable):
         }
         return self.action(server_id)
 
-    def reset_password(self, server_id: str) -> Service:
+    def reset_password(self, server_id: str) -> dict:
         """
         Reset cloud server password
         :param server_id: Cloud server id
@@ -242,7 +240,7 @@ class CloudServer(Listable, Gettable, Creatable, Deletable):
         }
         return self.action(server_id)
 
-    def hard_reboot(self, server_id: str) -> Service:
+    def hard_reboot(self, server_id: str) -> dict:
         """
         Hard reboot cloud server
         :param server_id: Cloud server id
@@ -253,7 +251,7 @@ class CloudServer(Listable, Gettable, Creatable, Deletable):
         }
         return self.action(server_id)
 
-    def soft_reboot(self, server_id: str) -> Service:
+    def soft_reboot(self, server_id: str) -> dict:
         """
         Soft reboot cloud server
         :param server_id: Cloud server id
@@ -264,7 +262,7 @@ class CloudServer(Listable, Gettable, Creatable, Deletable):
         }
         return self.action(server_id)
 
-    def start(self, server_id: str) -> Service:
+    def start(self, server_id: str) -> dict:
         """
         Start cloud server
         :param server_id: Cloud server id
@@ -275,7 +273,7 @@ class CloudServer(Listable, Gettable, Creatable, Deletable):
         }
         return self.action(server_id)
 
-    def stop(self, server_id: str) -> Service:
+    def stop(self, server_id: str) -> dict:
         """
         Stop cloud server
         :param server_id: Cloud server id

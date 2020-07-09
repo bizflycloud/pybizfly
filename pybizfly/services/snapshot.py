@@ -7,7 +7,8 @@ class Snapshot(Listable, Gettable, Creatable, Deletable):
     Snapshot resource service
     Allow list snapshots, get individual snapshot, create new snapshot and delete existed snapshot
     """
-    def list(self, bootable: bool = False, *args, **kwargs) -> 'Service':
+
+    def list(self, bootable: bool = False, *args, **kwargs) -> list:
         """
         List all snapshots base on auth token
         :param bootable: If this is true, list all snapshots that able to create cloud server
@@ -20,7 +21,7 @@ class Snapshot(Listable, Gettable, Creatable, Deletable):
 
         return super(Snapshot, self).list()
 
-    def get(self, snapshot_id: str, *args, **kwargs) -> 'Service':
+    def get(self, snapshot_id: str, *args, **kwargs) -> dict:
         """
         Get individual snapshot
         :param snapshot_id: Snapshot id
@@ -30,7 +31,7 @@ class Snapshot(Listable, Gettable, Creatable, Deletable):
         """
         return super(Snapshot, self).get(snapshot_id)
 
-    def create(self, name: str, volume_id: str, force: bool = True, *args, **kwargs) -> 'Service':
+    def create(self, name: str, volume_id: str, force: bool = True, *args, **kwargs) -> dict:
         """
         Create snapshot based on an image
         :param name: Snapshot name
@@ -43,7 +44,7 @@ class Snapshot(Listable, Gettable, Creatable, Deletable):
         self._request_body = self.__generate_create_snapshot_request_body(**locals())
         return super(Snapshot, self).create()
 
-    def delete(self, snapshot_id: str, *args, **kwargs) -> 'Service':
+    def delete(self, snapshot_id: str, *args, **kwargs) -> dict:
         """
         Delete a snapshot
         :param snapshot_id: Snapshot id
@@ -54,7 +55,7 @@ class Snapshot(Listable, Gettable, Creatable, Deletable):
         return super(Snapshot, self).delete(snapshot_id)
 
     @staticmethod
-    def __generate_create_snapshot_request_body(**kwargs):
+    def __generate_create_snapshot_request_body(**kwargs) -> dict:
         return {
             "name": kwargs['name'],
             "volume_id": kwargs['volume_id'],

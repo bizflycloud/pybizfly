@@ -91,7 +91,7 @@ class BizFlyClient(object):
     def _add_subscriber(self, service: Service):
         """
         Subscribe resource service to client.
-        Each of services that subscribe to this client get auth token updated when old one expired
+        Each of services that subscribe to this client get auth token updated when old one expire
         :param service:
         :return:
         """

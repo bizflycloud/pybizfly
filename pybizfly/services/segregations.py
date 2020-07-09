@@ -22,7 +22,10 @@ class Service(ABC):
     def _create_endpoint(self) -> str:
         pass
 
-    def execute(self, method: str = None) -> dict:
+    def set_auth_token(self, auth_token):
+        self.__auth_token = auth_token
+
+    def _execute(self, method: str = None):
         url = self.__build_uri()
         headers = self._create_headers()
 
@@ -33,7 +36,7 @@ class Service(ABC):
         http_request = HttpRequest(method=self._request_method, url=url, headers=headers, body=self._request_body)
         self.response_code, self.response_content = http_request.execute(5)
 
-        # If token expired, request a new one and send request again.
+        # If token expires, request a new one and send request again.
         if self.response_code == 401 and isinstance(self.authenticator, Authenticator):
             self.__auth_token = self.authenticator.request()
 
@@ -44,9 +47,6 @@ class Service(ABC):
         self._request_body = {}
 
         return self.response_content
-
-    def set_auth_token(self, auth_token):
-        self.__auth_token = auth_token
 
     def _add_sub_endpoint(self, sub_endpoint: str):
         self.__sub_endpoints.append(sub_endpoint)
@@ -68,40 +68,34 @@ class Service(ABC):
 
 # Interface segregation
 class Gettable(Service, ABC):
-    def get(self, _id: str, *args, **kwargs) -> Service:
-        self._request_method = GET
+    def get(self, _id: str, *args, **kwargs) -> dict:
         self._add_sub_endpoint(_id)
-        return self
+        return self._execute(method=GET)
 
 
 class Creatable(Service, ABC):
-    def create(self, *args, **kwargs) -> Service:
-        self._request_method = CREATE
-        return self
+    def create(self, *args, **kwargs) -> dict:
+        return self._execute(method=CREATE)
 
 
 class Patchable(Service, ABC):
-    def update(self, _id: str, *args, **kwargs) -> Service:
+    def update(self, _id: str, *args, **kwargs) -> dict:
         self._add_sub_endpoint(_id)
-        self._request_method = UPDATE
-        return self
+        return self._execute(method=UPDATE)
 
 
 class Listable(Service, ABC):
-    def list(self, *args, **kwargs) -> Service:
-        self._request_method = GET
-        return self
+    def list(self, *args, **kwargs) -> list:
+        return self._execute(method=GET)
 
 
 class Puttable(Service, ABC):
-    def put(self, _id: str, *args, **kwargs) -> Service:
+    def put(self, _id: str, *args, **kwargs) -> dict:
         self._add_sub_endpoint(_id)
-        self._request_method = PUT
-        return self
+        return self._execute(method=PUT)
 
 
 class Deletable(Service, ABC):
-    def delete(self, _id: str, *args, **kwargs) -> Service:
+    def delete(self, _id: str, *args, **kwargs) -> dict:
         self._add_sub_endpoint(_id)
-        self._request_method = DELETE
-        return self
+        return self._execute(method=DELETE)

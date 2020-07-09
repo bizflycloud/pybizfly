@@ -10,7 +10,7 @@ from pybizfly.utils.validators import validate_str_list, validate_dict_list, val
 
 def _should_retry(response_status: int) -> bool:
     """
-    Determine that request with specific response status should be continued to be retried
+    Determine request with specific response status should be continued to be retried
     :param response_status: HTTP request response status
     :return:
     """
