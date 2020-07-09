@@ -1,5 +1,5 @@
 from pybizfly.constants.services import (CLOUD_SERVER_DISK_TYPES, AVAILABILITY_ZONES, CLOUD_SERVER_SERVER_TYPES,
-                                CLOUD_SERVER_OS_TYPES)
+                                         CLOUD_SERVER_OS_TYPES, CLOUD_SERVER_ACTIONS)
 from pybizfly.constants.methods import METHODS
 from pybizfly.utils.exceptions import ExcludeValueException, InvalidTypeException, InvalidDictException
 
@@ -43,17 +43,19 @@ def validate_method(method: str):
         raise ExcludeValueException('method', METHODS)
 
 
-def validate_disk_type(disk_type, name_to_call: str = None):
+def __in_list(item, haystack: list, name_to_call: str):
+    if item not in haystack:
+        raise ExcludeValueException(name_to_call, haystack)
+
+
+def validate_disk_type(disk_type, name_to_call: str = 'disk_type'):
     """
     Validate disk type, must be in (SSD, HDD)
     :param disk_type:
     :param name_to_call: Name to call on raising exception
     :return:
     """
-    if disk_type not in CLOUD_SERVER_DISK_TYPES:
-        if not name_to_call:
-            name_to_call = 'disk_type'
-        raise ExcludeValueException(name_to_call, CLOUD_SERVER_DISK_TYPES)
+    __in_list(disk_type, CLOUD_SERVER_DISK_TYPES, name_to_call)
 
 
 def validate_server_type(server_type):
@@ -62,8 +64,7 @@ def validate_server_type(server_type):
     :param server_type:
     :return:
     """
-    if server_type not in CLOUD_SERVER_SERVER_TYPES:
-        raise ExcludeValueException('server_type', CLOUD_SERVER_SERVER_TYPES)
+    __in_list(server_type, CLOUD_SERVER_SERVER_TYPES, 'server_type')
 
 
 def validate_availability_zone(availability_zone):
@@ -72,8 +73,7 @@ def validate_availability_zone(availability_zone):
     :param availability_zone:
     :return:
     """
-    if availability_zone not in AVAILABILITY_ZONES:
-        raise ExcludeValueException('availability_zone', AVAILABILITY_ZONES)
+    __in_list(availability_zone, AVAILABILITY_ZONES, 'availability_zone')
 
 
 def validate_os_type(os_type):
@@ -82,8 +82,7 @@ def validate_os_type(os_type):
     :param os_type:
     :return:
     """
-    if os_type not in CLOUD_SERVER_OS_TYPES:
-        raise ExcludeValueException('os_type', CLOUD_SERVER_OS_TYPES)
+    __in_list(os_type, CLOUD_SERVER_OS_TYPES, 'os_type')
 
 
 def validate_data_disks(data_disks):
