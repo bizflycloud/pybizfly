@@ -22,7 +22,7 @@ class BizFlyClient(object):
         :return:
         """
         cs = CloudServer(self.__token, self.__email, self.__authenticator)
-        self._add_subscriber(cs)
+        self.add_subscriber(cs)
         return cs
 
     def backup(self) -> Backup:
@@ -30,8 +30,8 @@ class BizFlyClient(object):
         Create a new backup service instance
         :return:
         """
-        ba = Backup(self.__token, self.__email, self.__authenticator)
-        self._add_subscriber(ba)
+        ba = Backup(self.__token, self.__email, self)
+        self.add_subscriber(ba)
         return ba
 
     def firewall(self) -> Firewall:
@@ -39,8 +39,8 @@ class BizFlyClient(object):
         Create a new firewall service instance
         :return:
         """
-        fw = Firewall(self.__token, self.__email, self.__authenticator)
-        self._add_subscriber(fw)
+        fw = Firewall(self.__token, self.__email, self)
+        self.add_subscriber(fw)
         return fw
 
     def flavor(self) -> Flavor:
@@ -48,8 +48,8 @@ class BizFlyClient(object):
         Create a new flavor service instance
         :return:
         """
-        fv = Flavor(self.__token, self.__email, self.__authenticator)
-        self._add_subscriber(fv)
+        fv = Flavor(self.__token, self.__email, self)
+        self.add_subscriber(fv)
         return fv
 
     def image(self) -> Image:
@@ -57,8 +57,8 @@ class BizFlyClient(object):
         Create a new image service instance
         :return:
         """
-        im = Image(self.__token, self.__email, self.__authenticator)
-        self._add_subscriber(im)
+        im = Image(self.__token, self.__email, self)
+        self.add_subscriber(im)
         return im
 
     def key_pair(self) -> KeyPair:
@@ -66,8 +66,8 @@ class BizFlyClient(object):
         Create a new key pair service instance
         :return:
         """
-        kp = KeyPair(self.__token, self.__email, self.__authenticator)
-        self._add_subscriber(kp)
+        kp = KeyPair(self.__token, self.__email, self)
+        self.add_subscriber(kp)
         return kp
 
     def snapshot(self) -> Snapshot:
@@ -75,8 +75,8 @@ class BizFlyClient(object):
         Create a new snapshot service instance
         :return:
         """
-        ss = Snapshot(self.__token, self.__email, self.__authenticator)
-        self._add_subscriber(ss)
+        ss = Snapshot(self.__token, self.__email, self)
+        self.add_subscriber(ss)
         return ss
 
     def volume(self) -> Volume:
@@ -84,11 +84,28 @@ class BizFlyClient(object):
         Create a new volume service instance
         :return:
         """
-        vl = Volume(self.__token, self.__email, self.__authenticator)
-        self._add_subscriber(vl)
+        vl = Volume(self.__token, self.__email, self)
+        self.add_subscriber(vl)
         return vl
 
-    def _add_subscriber(self, service: Service):
+    def update_token(self) -> bool:
+        """
+        Update token to all services that subscribe to this client
+        :return:
+        """
+        update_auth_token = self.__authenticator.new_token_arrived
+        if update_auth_token:
+            self.__token = self.__authenticator.token
+            for subscriber in self.subscribers:
+                subscriber.set_auth_token(auth_token=self.__token)
+            self.__authenticator.reset()
+
+        return update_auth_token and len(self.subscribers) > 0
+
+    def get_authenticator(self) -> Authenticator:
+        return self.__authenticator
+
+    def add_subscriber(self, service: Service):
         """
         Subscribe resource service to client.
         Each of services that subscribe to this client get auth token updated when old one expire
@@ -96,11 +113,7 @@ class BizFlyClient(object):
         :return:
         """
         self.subscribers.append(service)
-        update_auth_token = self.__authenticator.new_token_arrived
-        if update_auth_token:
-            for subscriber in self.subscribers:
-                subscriber.set_auth_token(self.__authenticator.token)
-            self.__authenticator.reset()
+        self.update_token()
 
     def __authorization(self):
         self.__token = self.__authenticator.request()

@@ -1,17 +1,22 @@
 from abc import ABC, abstractmethod
 
 from pybizfly.constants.api import DASHBOARD_URI
-from pybizfly.constants.methods import *
+from pybizfly.constants.methods import GET, CREATE, UPDATE, DELETE, PUT, METHODS
 from pybizfly.utils.authenticator import Authenticator
 from pybizfly.utils.https import build_uri, HttpRequest
 
 
 class Service(ABC):
-    def __init__(self, auth_token: str, email: str, authenticator: Authenticator = None):
+    def __init__(self, auth_token: str, email: str, client=None):
         self.response_content = {}
         self.response_code = None
-        self.authenticator = authenticator
-        self._request_method = None
+
+        # for update auth token
+        self.__client = client
+        self.__authenticator = None
+        self.__prepare_service()
+
+        self._request_method = GET
         self._request_body = {}
         self.__sub_endpoints = []
         self.__parameters = []
@@ -22,7 +27,7 @@ class Service(ABC):
     def _create_endpoint(self) -> str:
         pass
 
-    def set_auth_token(self, auth_token):
+    def set_auth_token(self, auth_token: str):
         self.__auth_token = auth_token
 
     def _execute(self, method: str = None):
@@ -37,8 +42,10 @@ class Service(ABC):
         self.response_code, self.response_content = http_request.execute(5)
 
         # If token expires, request a new one and send request again.
-        if self.response_code == 401 and isinstance(self.authenticator, Authenticator):
-            self.__auth_token = self.authenticator.request()
+        if self.response_code == 401 and isinstance(self.__authenticator, Authenticator):
+            self.__auth_token = self.__authenticator.request()
+            # trigger client update token
+            self.__client.update_token()
 
             headers = self._create_headers()
             self.response_code, self.response_content = http_request.execute(5, headers=headers)
@@ -70,6 +77,18 @@ class Service(ABC):
         self.__sub_endpoints = []
         self.__parameters = []
         return True
+
+    def __prepare_service(self):
+        # import client to trigger update token to other services that subscribe to client
+        from pybizfly.client import BizFlyClient
+        if isinstance(self.__client, BizFlyClient):
+            self.__authenticator = self.__client.get_authenticator()
+        else:
+            self.__authenticator = None
+
+        # connect client and service if client has not subscribed to client
+        if self not in self.__client.subscribers:
+            self.__client.add_subscriber(self)
 
 
 # Interface segregation
