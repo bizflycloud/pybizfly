@@ -106,7 +106,7 @@ def validate_data_disks(data_disks):
 
 def validate_firewall_bounds(bounds_rules, name_to_call: str = None):
     """
-    Validate list of firewall rules. Each item must include (type, protocol, port_range, cidr)
+    Validate list of firewall rules. Each item must include (type, protocol, cidr)
     :param bounds_rules:
     :param name_to_call:
     :return:
@@ -114,7 +114,7 @@ def validate_firewall_bounds(bounds_rules, name_to_call: str = None):
     count = 0
     if not name_to_call:
         name_to_call = 'bound_rules'
-    insisted = ['type', 'protocol', 'port_range', 'cidr']
+    insisted = ['type', 'protocol', 'cidr']
     for bound in bounds_rules:
         try:
             if not isinstance(bound, dict):

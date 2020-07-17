@@ -1,8 +1,7 @@
 from pybizfly.constants.api import RESOURCE_ENDPOINTS
 from pybizfly.constants.services import (REBUILD, RESIZE, GET_VNC, ADD_FIREWALL, CHANGE_TYPE, RESET_PASSWORD,
                                          HARD_REBOOT, SOFT_REBOOT, STOP, START, OS_IMAGE_TYPE, OS_VOLUME_TYPE,
-                                         OS_SNAPSHOT_TYPE, SSD,
-                                         PREMIUM, HN1, DEFAULT_FLAVOR)
+                                         OS_SNAPSHOT_TYPE, SSD, PREMIUM, HN1, DEFAULT_FLAVOR)
 from pybizfly.services.segregations import Listable, Gettable, Creatable, Deletable
 from pybizfly.utils.authenticator import Authenticator
 from pybizfly.utils.validators import (validate_str_list, validate_server_type, validate_disk_type,
@@ -53,7 +52,7 @@ class CloudServer(Listable, Gettable, Creatable, Deletable):
         :return:
         """
         validate_os_type(os_type)
-        validate_disk_type(root_disk_size)
+        validate_disk_type(root_disk_type)
         validate_server_type(server_type)
         validate_availability_zone(availability_zone)
         if addition_data_disks:

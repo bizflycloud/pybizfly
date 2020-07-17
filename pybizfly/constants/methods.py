@@ -1,6 +1,6 @@
 GET = 'get'
 CREATE = 'post'
-UPDATE = 'update'
+UPDATE = 'patch'
 DELETE = 'delete'
 PUT = 'put'
 

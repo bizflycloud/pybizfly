@@ -92,10 +92,10 @@ def build_uri(uri: str, sub_endpoints: list, parameters: list):
 
     if len(parameters) > 0:
         first_parameter = parameters.pop()
-        uri += '?{}={}'.format(*first_parameter.item())
+        uri += '?{}={}'.format(*tuple(first_parameter.items())[0])
 
     for parameter in parameters:
-        uri += '&{}={}'.format(*parameter.items())
+        uri += '&{}={}'.format(*tuple(parameter.items())[0])
 
     return uri
 

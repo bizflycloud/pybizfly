@@ -21,7 +21,7 @@ class BizFlyClient(object):
         Create a new cloud server service instance
         :return:
         """
-        cs = CloudServer(self.__token, self.__email, self.__authenticator)
+        cs = CloudServer(self.__token, self.__email, self)
         self.add_subscriber(cs)
         return cs
 

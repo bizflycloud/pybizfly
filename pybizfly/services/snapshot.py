@@ -31,10 +31,10 @@ class Snapshot(Listable, Gettable, Creatable, Deletable):
         """
         return super(Snapshot, self).get(snapshot_id)
 
-    def create(self, name: str, volume_id: str, force: bool = True, *args, **kwargs) -> dict:
+    def create(self, resource_name: str, volume_id: str, force: bool = True, *args, **kwargs) -> dict:
         """
         Create snapshot based on an image
-        :param name: Snapshot name
+        :param resource_name: Resource name to create snapshot
         :param volume_id: Volume id
         :param force:
         :param args:

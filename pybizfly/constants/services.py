@@ -30,8 +30,8 @@ BASIC = 'basic'
 CLOUD_SERVER_SERVER_TYPES = [PREMIUM, ENTERPRISE, BASIC]
 
 # availability zone
-HN1 = 'HN1',
-HN2 = 'HN2',
+HN1 = 'HN1'
+HN2 = 'HN2'
 AVAILABILITY_ZONES = [HN1, HN2]
 
 # flavor
