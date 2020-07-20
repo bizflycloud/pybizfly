@@ -39,8 +39,7 @@ def validate_method(method: str):
     :param method:
     :return:
     """
-    if method not in METHODS:
-        raise ExcludeValueException('method', METHODS)
+    __in_list(item=method, haystack=METHODS, name_to_call='method')
 
 
 def __in_list(item, haystack: list, name_to_call: str):
