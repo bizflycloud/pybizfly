@@ -5,8 +5,8 @@ from pybizfly.constants.services import (REBUILD, RESIZE, GET_VNC, ADD_FIREWALL,
 from pybizfly.services.segregations import Listable, Gettable, Creatable, Deletable
 from pybizfly.utils.authenticator import Authenticator
 from pybizfly.utils.validators import (validate_str_list, validate_server_type, validate_disk_type,
-                                       validate_availability_zone,
-                                       validate_os_type, validate_data_disks)
+                                       validate_availability_zone, validate_os_type, validate_data_disks,
+                                       validate_cloud_server_action)
 
 
 class CloudServer(Listable, Gettable, Creatable, Deletable):
@@ -159,6 +159,7 @@ class CloudServer(Listable, Gettable, Creatable, Deletable):
         self._add_sub_endpoint('action')
 
         if request_body:
+            validate_cloud_server_action(request_body.get('action'))
             self._request_body = request_body
         return super(CloudServer, self).create()
 

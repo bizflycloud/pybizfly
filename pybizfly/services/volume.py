@@ -2,7 +2,7 @@ from pybizfly.constants.api import RESOURCE_ENDPOINTS
 from pybizfly.constants.services import (RESTORE_VOLUME, DETACH, ATTACH, EXTEND, HN1, SSD)
 from pybizfly.services.segregations import Gettable, Creatable, Listable, Deletable
 from pybizfly.utils.exceptions import BizFlyClientException
-from pybizfly.utils.validators import validate_disk_type, validate_availability_zone
+from pybizfly.utils.validators import validate_disk_type, validate_availability_zone, validate_volume_action
 
 
 class Volume(Listable, Gettable, Creatable, Deletable):
@@ -74,6 +74,8 @@ class Volume(Listable, Gettable, Creatable, Deletable):
         self._add_sub_endpoint('action')
 
         if request_body:
+            # Validate volume action if use action method directly
+            validate_volume_action(request_body.get('type'))
             self._request_body = request_body
         return super(Volume, self).create()
 

@@ -1,5 +1,5 @@
 from pybizfly.constants.services import (CLOUD_SERVER_DISK_TYPES, AVAILABILITY_ZONES, CLOUD_SERVER_SERVER_TYPES,
-                                         CLOUD_SERVER_OS_TYPES, CLOUD_SERVER_ACTIONS)
+                                         CLOUD_SERVER_OS_TYPES, CLOUD_SERVER_ACTIONS, VOLUME_ACTIONS)
 from pybizfly.constants.methods import METHODS
 from pybizfly.utils.exceptions import ExcludeValueException, InvalidTypeException, InvalidDictException
 
@@ -124,3 +124,23 @@ def validate_firewall_bounds(bounds_rules, name_to_call: str = None):
                     raise KeyError()
         except KeyError:
             raise InvalidDictException(name_to_call, insisted)
+
+
+def validate_cloud_server_action(cs_action, name_to_call: str = 'action'):
+    """
+    Validate cloud server action. Must be in CLOUD_SERVER_ACTIONS
+    :param cs_action:
+    :param name_to_call:
+    :return:
+    """
+    return __in_list(cs_action, CLOUD_SERVER_ACTIONS, name_to_call)
+
+
+def validate_volume_action(volume_action, name_to_call: str = 'type'):
+    """
+    Validate volume action. Must be in VOLUME_ACTIONS
+    :param volume_action:
+    :param name_to_call:
+    :return:
+    """
+    return __in_list(volume_action, VOLUME_ACTIONS, name_to_call)

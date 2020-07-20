@@ -42,3 +42,4 @@ RESTORE_VOLUME = 'restore_volume'
 DETACH = 'detach'
 ATTACH = 'attach'
 EXTEND = 'extend'
+VOLUME_ACTIONS = [RESTORE_VOLUME, DETACH, ATTACH, EXTEND]
