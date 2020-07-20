@@ -3,7 +3,6 @@ from pybizfly.constants.services import (REBUILD, RESIZE, GET_VNC, ADD_FIREWALL,
                                          HARD_REBOOT, SOFT_REBOOT, STOP, START, OS_IMAGE_TYPE, OS_VOLUME_TYPE,
                                          OS_SNAPSHOT_TYPE, SSD, PREMIUM, HN1, DEFAULT_FLAVOR)
 from pybizfly.services.segregations import Listable, Gettable, Creatable, Deletable
-from pybizfly.utils.authenticator import Authenticator
 from pybizfly.utils.validators import (validate_str_list, validate_server_type, validate_disk_type,
                                        validate_availability_zone, validate_os_type, validate_data_disks,
                                        validate_cloud_server_action)
@@ -15,8 +14,8 @@ class CloudServer(Listable, Gettable, Creatable, Deletable):
     Allowing list all servers, get individual server, create new server and delete individual server base on auth token
     """
 
-    def __init__(self, auth_token: str, email: str, authenticator: Authenticator = None):
-        super(CloudServer, self).__init__(auth_token, email, authenticator)
+    def __init__(self, auth_token: str, email: str, client=None):
+        super(CloudServer, self).__init__(auth_token, email, client)
         self._post_request_body = []
 
     def get(self, server_id: str, *args, **kwargs) -> dict:
