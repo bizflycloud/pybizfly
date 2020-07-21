@@ -14,23 +14,24 @@ Email tài khoản và mật khẩu đăng ký trên trang [BizFly Cloud](https:
 ## Cấu hình
 ```python  
 import pybizfly
-
 client = pybizfly.BizFlyClient(email='dungpq@vccloud.vn', password='123456')
 ```
 <h2 id="tính-năng">Tính năng</h2>
 pybizfly hỗ trợ tất cả các tính năng được cung cấp bởi [BizFly Cloud Cloud Server API](https://support.bizflycloud.vn/api/cloudserver/#introduction) cung cấp, bao gồm:
-* Truy vấn thông tin và quản lý hoạt động cloud server.
-* Thiết lập, chỉnh sửa, truy vấn thông tin và xóa tường lửa cho cloud server.
-* Thiết lập đặt lịch sao lưu cloud server.
-* Đặt SSH key cho tài khoản.
-* Tạo snapshot cho cloud server.
-* Thiết lập và quản lý hoạt động các volume của cloud server.
+ - [Truy vấn thông tin và quản lý hoạt động cloud server](#cloud-server)
+ - [Thiết lập đặt lịch sao lưu cloud server](#backup)
+ - [Thiết lập, chỉnh sửa, truy vấn thông tin và xóa tường lửa cho cloud server](#firewall)
+ - [Truy vấn thông tin image tạo cloud server](#image)
+ - [Truy vấn thông tin flavor](#flavor)
+ - [Đặt SSH key cho tài khoản](#ssh-key)
+ - [Tạo snapshot cho cloud server](#snapshot)
+ - [Thiết lập và quản lý hoạt động các volume của cloud server](#volume)
 
 ## Sử dụng
-<h4>Cloud server</h4>
+<h3 id="cloud-server">Cloud server</h3>
 Pybizfly hỗ trợ truy vấn thông tin và quản lý hoạt động các cloud server của tài khoản.
 
-**[⬆  Quay lại Tính năng](#tính-năng)**
+[⬆  Quay lại Tính năng](#tính-năng)
 
 Ví dụ này biểu diễn cách liệt kê các server của một tài khoản.
 ```python
@@ -166,10 +167,10 @@ server = client.cloud_server().stop(server_id='12as25asc74asd6asd')
 
 print(server)
 ```
-<h4>Đặt lịch sao lưu</h4>
+<h3 id="backup">Backup</h3>
 Pybizfly hỗ trợ truy vấn danh sách, tạo, xóa và chỉnh sửa lịch sao lưu cloud server.
 
-**[⬆  Quay lại Tính năng](#tính-năng)**
+[⬆  Quay lại Tính năng](#tính-năng)
 
 Ví dụ này biểu diễn cách in thông tin một bản sao lưu.
 ```python
@@ -210,10 +211,10 @@ backup = client.backup().put(backup_id='65as88as5d6as8dd2asd', backup_at_time=16
 print(backup)
 ```
 
-<h4>Firewall</h4>
+<h3 id="firewall">Firewall</h3>
 Pybizfly hỗ trợ cấu hình tường lửa và cài đặt tường lửa cho cloud server.
 
-**[⬆  Quay lại Tính năng](#tính-năng)**
+[⬆  Quay lại Tính năng](#tính-năng)
 
 Ví dụ này biểu diễn cách in thông tin một tường lửa.
 ```python
@@ -279,10 +280,10 @@ firewall = client.firewall().delete_across_servers(firewall_id='65as88as5d6as8dd
 
 print(firewall)
 ```  
-<h4>Image</h4>
+<h3 id="image">Image</h3>
 Pybizfly hỗ trợ truy vấn danh sách các image dùng để tạo server.
 
-**[⬆  Quay lại Tính năng](#tính-năng)**
+[⬆  Quay lại Tính năng](#tính-năng)
 
 Ví dụ này biểu diễn cách lấy danh sách các image dùng để tạo server.
 ```python
@@ -293,7 +294,7 @@ images = client.image().list()
 
 print(images)
 ```  
-<h4>Flavor</h4>
+<h3 id="flavor">Flavor</h3>
 Pybizfly hỗ trợ truy vấn danh sách các flavor
 
 Ví dụ này biểu diễn cách lấy danh sách các flavor.
@@ -305,10 +306,10 @@ flavors = client.flavor().list()
 
 print(flavors)
 ``` 
-<h4>SSH key</h4>
+<h3 id="ssh-key">SSH key</h3>
 Pybizfly hỗ trợ đặt SSH key để cấu hình server
 
-**[⬆  Quay lại Tính năng](#tính-năng)**
+[⬆  Quay lại Tính năng](#tính-năng)
 
 Ví dụ này biểu diễn cách lấy danh sách các SSH key.
 ```python
@@ -337,10 +338,10 @@ keys = client.key_pair().delete(name='sshkey')
 
 print(keys)
 ``` 
-<h4>Snapshot</h4>
+<h3 id="snapshot">Snapshot</h3>
 Pybizfly hỗ trợ tạo snapshot cho server.
 
-**[⬆  Quay lại Tính năng](#tính-năng)**
+[⬆  Quay lại Tính năng](#tính-năng)
 
 Ví dụ này biểu diễn cách lấy danh sách các snapshot có thể dùng để tạo server (bootable=ue). 
 ```python
@@ -369,10 +370,10 @@ snapshot = client.snapshot().delete(snapshot_id='65as88as5d6as8dd2asd')
 
 print(snapshot)
 ```   
-<h4>Volume</h4>
+<h3 id="volume">Volume</h3>
 Pybizfly truy vấn và quản lý các volume.
 
-**[⬆  Quay lại Tính năng](#tính-năng)**
+[⬆  Quay lại Tính năng](#tính-năng)
 
 Ví dụ này biểu diễn cách lấy các một volume có thể dùng để tạo server (bootable=True).
 ```python
