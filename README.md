@@ -17,7 +17,7 @@ import pybizfly
 
 client = pybizfly.BizFlyClient(email='dungpq@vccloud.vn', password='123456')
 ```
-## Tính năng {: #Tính-năng }
+<h2 id="tính-năng">Tính năng</h2>
 pybizfly hỗ trợ tất cả các tính năng được cung cấp bởi [BizFly Cloud Cloud Server API](https://support.bizflycloud.vn/api/cloudserver/#introduction) cung cấp, bao gồm:
 * Truy vấn thông tin và quản lý hoạt động cloud server.
 * Thiết lập, chỉnh sửa, truy vấn thông tin và xóa tường lửa cho cloud server.
@@ -30,7 +30,7 @@ pybizfly hỗ trợ tất cả các tính năng được cung cấp bởi [BizFl
 <h4>Cloud server</h4>
 Pybizfly hỗ trợ truy vấn thông tin và quản lý hoạt động các cloud server của tài khoản.
 
-**[⬆  Quay lại Tính năng](#Tính-năng)**
+**[⬆  Quay lại Tính năng](#tính-năng)**
 
 Ví dụ này biểu diễn cách liệt kê các server của một tài khoản.
 ```python
