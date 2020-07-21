@@ -17,19 +17,19 @@ import pybizfly
 client = pybizfly.BizFlyClient(email='dungpq@vccloud.vn', password='123456')
 ```
 <h2 id="tính-năng">Tính năng</h2>
-pybizfly hỗ trợ tất cả các tính năng được cung cấp bởi [BizFly Cloud Cloud Server API](https://support.bizflycloud.vn/api/cloudserver/#introduction) cung cấp, bao gồm:
- - [Truy vấn thông tin và quản lý hoạt động cloud server](#cloud-server)
- - [Thiết lập đặt lịch sao lưu cloud server](#backup)
- - [Thiết lập, chỉnh sửa, truy vấn thông tin và xóa tường lửa cho cloud server](#firewall)
- - [Truy vấn thông tin image tạo cloud server](#image)
- - [Truy vấn thông tin flavor](#flavor)
- - [Đặt SSH key cho tài khoản](#ssh-key)
- - [Tạo snapshot cho cloud server](#snapshot)
- - [Thiết lập và quản lý hoạt động các volume của cloud server](#volume)
+PyBizfly hỗ trợ tất cả các tính năng được cung cấp bởi [BizFly Cloud Cloud Server API](https://support.bizflycloud.vn/api/cloudserver/#introduction) cung cấp, bao gồm:
+- [Truy vấn thông tin và quản lý hoạt động cloud server](#cloud-server)
+- [Thiết lập đặt lịch sao lưu cloud server](#backup)
+- [Thiết lập, chỉnh sửa, truy vấn thông tin và xóa tường lửa cho cloud server](#firewall)
+- [Truy vấn thông tin image tạo cloud server](#image)
+- [Truy vấn thông tin flavor](#flavor)
+- [Đặt SSH key cho tài khoản](#ssh-key)
+- [Tạo snapshot cho cloud server](#snapshot)
+- [Thiết lập và quản lý hoạt động các volume của cloud server](#volume)
 
 ## Sử dụng
 <h3 id="cloud-server">Cloud server</h3>
-Pybizfly hỗ trợ truy vấn thông tin và quản lý hoạt động các cloud server của tài khoản.
+PyBizfly hỗ trợ truy vấn thông tin và quản lý hoạt động các cloud server của tài khoản.
 
 [⬆  Quay lại Tính năng](#tính-năng)
 
@@ -151,12 +151,12 @@ print(server)
 ```
 Ví dụ này biểu diễn cách bật một cloud server.
 ```python
-    import pybizfly
+import pybizfly
 
-    client = pybizfly.BizFlyClient(email='dungpq@vccloud.vn', password='123456')
-    server = client.cloud_server().start(server_id='12as25asc74asd6asd')
-    
-    print(server)
+client = pybizfly.BizFlyClient(email='dungpq@vccloud.vn', password='123456')
+server = client.cloud_server().start(server_id='12as25asc74asd6asd')
+
+print(server)
 ```
 Ví dụ này biểu diễn cách tăt một cloud server.
 ```python
@@ -168,7 +168,7 @@ server = client.cloud_server().stop(server_id='12as25asc74asd6asd')
 print(server)
 ```
 <h3 id="backup">Backup</h3>
-Pybizfly hỗ trợ truy vấn danh sách, tạo, xóa và chỉnh sửa lịch sao lưu cloud server.
+PyBizfly hỗ trợ truy vấn danh sách, tạo, xóa và chỉnh sửa lịch sao lưu cloud server.
 
 [⬆  Quay lại Tính năng](#tính-năng)
 
@@ -212,7 +212,7 @@ print(backup)
 ```
 
 <h3 id="firewall">Firewall</h3>
-Pybizfly hỗ trợ cấu hình tường lửa và cài đặt tường lửa cho cloud server.
+PyBizfly hỗ trợ cấu hình tường lửa và cài đặt tường lửa cho cloud server.
 
 [⬆  Quay lại Tính năng](#tính-năng)
 
@@ -281,7 +281,7 @@ firewall = client.firewall().delete_across_servers(firewall_id='65as88as5d6as8dd
 print(firewall)
 ```  
 <h3 id="image">Image</h3>
-Pybizfly hỗ trợ truy vấn danh sách các image dùng để tạo server.
+PyBizfly hỗ trợ truy vấn danh sách các image dùng để tạo server.
 
 [⬆  Quay lại Tính năng](#tính-năng)
 
@@ -295,7 +295,7 @@ images = client.image().list()
 print(images)
 ```  
 <h3 id="flavor">Flavor</h3>
-Pybizfly hỗ trợ truy vấn danh sách các flavor
+PyBizfly hỗ trợ truy vấn danh sách các flavor
 
 Ví dụ này biểu diễn cách lấy danh sách các flavor.
 ```python
@@ -307,7 +307,7 @@ flavors = client.flavor().list()
 print(flavors)
 ``` 
 <h3 id="ssh-key">SSH key</h3>
-Pybizfly hỗ trợ đặt SSH key để cấu hình server
+PyBizfly hỗ trợ đặt SSH key để cấu hình server
 
 [⬆  Quay lại Tính năng](#tính-năng)
 
@@ -339,7 +339,7 @@ keys = client.key_pair().delete(name='sshkey')
 print(keys)
 ``` 
 <h3 id="snapshot">Snapshot</h3>
-Pybizfly hỗ trợ tạo snapshot cho server.
+PyBizfly hỗ trợ tạo snapshot cho server.
 
 [⬆  Quay lại Tính năng](#tính-năng)
 
@@ -371,7 +371,7 @@ snapshot = client.snapshot().delete(snapshot_id='65as88as5d6as8dd2asd')
 print(snapshot)
 ```   
 <h3 id="volume">Volume</h3>
-Pybizfly truy vấn và quản lý các volume.
+PyBizfly truy vấn và quản lý các volume.
 
 [⬆  Quay lại Tính năng](#tính-năng)
 
