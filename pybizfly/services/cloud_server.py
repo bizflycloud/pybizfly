@@ -11,6 +11,7 @@ from pybizfly.utils.validators import (validate_str_list, validate_server_type, 
 class CloudServer(Listable, Gettable, Creatable, Deletable):
     """
     Cloud server resource service
+
     Allowing list all servers, get individual server, create new server and delete individual server base on auth token
     """
 
@@ -21,6 +22,7 @@ class CloudServer(Listable, Gettable, Creatable, Deletable):
     def get(self, server_id: str, *args, **kwargs) -> dict:
         """
         Get cloud server by server_id
+
         :param server_id: Cloud server id
         :param args:
         :param kwargs:
@@ -37,6 +39,7 @@ class CloudServer(Listable, Gettable, Creatable, Deletable):
         """
         Create an cloud server.
         Stack create methods to create equivalent amount of cloud servers.
+
         :param name: Cloud server name
         :param os_type: Cloud server os type, must be in (image, snapshot, volume)
         :param os_id: image_id or snapshot_id or volume_id to create cloud server
@@ -70,6 +73,7 @@ class CloudServer(Listable, Gettable, Creatable, Deletable):
         """
         Create cloud server based on an image
         Stack create methods to create equivalent amount of cloud servers.
+
         :param name: Cloud server name
         :param image_id: image_id to create cloud server
         :param flavor_name:
@@ -93,6 +97,7 @@ class CloudServer(Listable, Gettable, Creatable, Deletable):
         """
         Create cloud server based on a volume
         Stack create methods to create equivalent amount of cloud servers.
+
         :param name: Cloud server name
         :param volume_id: volume_id to create cloud server
         :param flavor_name:
@@ -116,6 +121,7 @@ class CloudServer(Listable, Gettable, Creatable, Deletable):
         """
         Create cloud server based on a snapshot
         Stack create methods to create equivalent amount of cloud servers.
+
         :param name: Cloud server name
         :param snapshot_id: snapshot_id to create cloud server
         :param flavor_name:
@@ -133,6 +139,7 @@ class CloudServer(Listable, Gettable, Creatable, Deletable):
     def delete(self, server_id: str, delete_volumes: list = None, *args, **kwargs) -> dict:
         """
         Delete a cloud server
+
         :param server_id: Cloud server id
         :param delete_volumes: List of volume to delete along
         :param args:
@@ -149,6 +156,7 @@ class CloudServer(Listable, Gettable, Creatable, Deletable):
     def action(self, server_id: str, request_body: dict = None) -> dict:
         """
         Send action to an individual cloud server
+
         :param server_id: Cloud server id
         :param request_body:
         :return:
@@ -165,6 +173,7 @@ class CloudServer(Listable, Gettable, Creatable, Deletable):
     def rebuild(self, server_id: str, image_id: str) -> dict:
         """
         Rebuild a cloud server based on an image
+
         :param server_id: Cloud server id
         :param image_id: Image id
         :return:
@@ -178,6 +187,7 @@ class CloudServer(Listable, Gettable, Creatable, Deletable):
     def resize(self, server_id: str, flavor_name: str) -> dict:
         """
         Resize a cloud server based on flavor
+
         :param server_id: Cloud server id
         :param flavor_name: Flavor name
         :return:
@@ -204,6 +214,7 @@ class CloudServer(Listable, Gettable, Creatable, Deletable):
     def add_firewall(self, server_id: str, firewall_id: str) -> dict:
         """
         Add a firewall to cloud server
+
         :param server_id: Cloud server id
         :param firewall_id: Firewall id
         :return:
@@ -217,6 +228,7 @@ class CloudServer(Listable, Gettable, Creatable, Deletable):
     def change_type(self, server_id: str, new_type: str) -> dict:
         """
         Change cloud server type
+
         :param server_id: Cloud server id
         :param new_type: Cloud server new type, must be in (basic, premium, enterprise)
         :return:
@@ -231,6 +243,7 @@ class CloudServer(Listable, Gettable, Creatable, Deletable):
     def reset_password(self, server_id: str) -> dict:
         """
         Reset cloud server password
+
         :param server_id: Cloud server id
         :return:
         """
@@ -242,6 +255,7 @@ class CloudServer(Listable, Gettable, Creatable, Deletable):
     def hard_reboot(self, server_id: str) -> dict:
         """
         Hard reboot cloud server
+
         :param server_id: Cloud server id
         :return:
         """
@@ -264,6 +278,7 @@ class CloudServer(Listable, Gettable, Creatable, Deletable):
     def start(self, server_id: str) -> dict:
         """
         Start cloud server
+
         :param server_id: Cloud server id
         :return:
         """
@@ -275,6 +290,7 @@ class CloudServer(Listable, Gettable, Creatable, Deletable):
     def stop(self, server_id: str) -> dict:
         """
         Stop cloud server
+
         :param server_id: Cloud server id
         :return:
         """
@@ -287,6 +303,7 @@ class CloudServer(Listable, Gettable, Creatable, Deletable):
     def __generate_create_cs_request_body(**kwargs):
         """
         Generate request body for sending create cloud server request
+
         :param kwargs:
         :return:
         """
@@ -325,6 +342,7 @@ class CloudServer(Listable, Gettable, Creatable, Deletable):
     def __get_local(**kwargs):
         """
         Get specific key-value pairs in local()
+
         :param kwargs:
         :return:
         """

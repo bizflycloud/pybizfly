@@ -12,6 +12,7 @@ class Firewall(Listable, Gettable, Creatable, Patchable, Deletable):
     def get(self, firewall_id: str, *args, **kwargs) -> dict:
         """
         Get firewall
+
         :param firewall_id: Firewall id
         :param args:
         :param kwargs:
@@ -24,6 +25,7 @@ class Firewall(Listable, Gettable, Creatable, Patchable, Deletable):
                on_servers: list, *args, **kwargs) -> dict:
         """
         Create new firewall
+
         :param name: Firewall name
         :param inbound_rules: List of firewall inbound rules.
         Each item must include (type, protocol, port_range, cidr)
@@ -45,6 +47,7 @@ class Firewall(Listable, Gettable, Creatable, Patchable, Deletable):
                on_servers: list = None, *args, **kwargs) -> dict:
         """
         Update firewall
+
         :param firewall_id: Firewall id
         :param inbound_rules: List of firewall inbound rules.
         Each item must include (type, protocol, port_range, 'cidr)
@@ -67,6 +70,7 @@ class Firewall(Listable, Gettable, Creatable, Patchable, Deletable):
     def delete(self, firewall_id: str, *args, **kwargs) -> dict:
         """
         Delete firewall
+
         :param firewall_id: Firewall id
         :param args:
         :param kwargs:
@@ -77,6 +81,7 @@ class Firewall(Listable, Gettable, Creatable, Patchable, Deletable):
     def delete_across_servers(self, firewall_id: str, servers: list) -> dict:
         """
         Remove firewall on listed servers
+
         :param firewall_id: Firewall id
         :param servers: Servers to remove firewall from
         :return:

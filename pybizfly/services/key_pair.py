@@ -10,6 +10,7 @@ class KeyPair(Listable, Creatable, Deletable):
     def create(self, name: str, key_value: str = None, *args, **kwargs) -> dict:
         """
         Create new ssh key
+
         :param name: Ssh key name
         :param key_value: Ssh key value
         :param args:
@@ -22,6 +23,7 @@ class KeyPair(Listable, Creatable, Deletable):
     def delete(self, name: str, *args, **kwargs) -> dict:
         """
         Delete a ssh key based on its name
+
         :param name: Ssh key
         :param args:
         :param kwargs:

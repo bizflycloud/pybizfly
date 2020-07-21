@@ -11,6 +11,7 @@ from pybizfly.utils.validators import validate_str_list, validate_dict_list, val
 def _should_retry(response_status: int) -> bool:
     """
     Determine request with specific response status should be continued to be retried
+
     :param response_status: HTTP request response status
     :return:
     """
@@ -28,6 +29,7 @@ def _should_retry(response_status: int) -> bool:
 def _retry_request(num_retry: int, uri: str, method: str, **kwargs):
     """
     Retry HTTP request in number of times.
+
     :param num_retry:
     :param uri:
     :param method:
@@ -66,6 +68,7 @@ def _retry_request(num_retry: int, uri: str, method: str, **kwargs):
 def serialize_json(json_content) -> dict:
     """
     Serialize json data to dict
+
     :param json_content:
     :return:
     """
@@ -79,6 +82,7 @@ def serialize_json(json_content) -> dict:
 def build_uri(uri: str, sub_endpoints: list, parameters: list):
     """
     Build uri with sub endpoints and URL parameters
+
     :param uri:
     :param sub_endpoints:
     :param parameters:

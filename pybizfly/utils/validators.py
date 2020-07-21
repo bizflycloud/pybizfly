@@ -7,6 +7,7 @@ from pybizfly.utils.exceptions import ExcludeValueException, InvalidTypeExceptio
 def validate_str_list(str_list: list) -> list:
     """
     Validate list with string instance items
+
     :param str_list:
     :return:
     """
@@ -23,6 +24,7 @@ def validate_str_list(str_list: list) -> list:
 def validate_dict_list(dict_list: list) -> list:
     """
     Validate list with dict  instance items
+
     :param dict_list:
     :return:
     """
@@ -36,6 +38,7 @@ def validate_dict_list(dict_list: list) -> list:
 def validate_method(method: str):
     """
     Restrict allowed method
+
     :param method:
     :return:
     """
@@ -50,6 +53,7 @@ def __in_list(item, haystack: list, name_to_call: str):
 def validate_disk_type(disk_type, name_to_call: str = 'disk_type'):
     """
     Validate disk type, must be in (SSD, HDD)
+
     :param disk_type:
     :param name_to_call: Name to call on raising exception
     :return:
@@ -60,6 +64,7 @@ def validate_disk_type(disk_type, name_to_call: str = 'disk_type'):
 def validate_server_type(server_type):
     """
     Validate server type. Must be in (basic, premium, enterprise)
+
     :param server_type:
     :return:
     """
@@ -69,6 +74,7 @@ def validate_server_type(server_type):
 def validate_availability_zone(availability_zone):
     """
     Validate availability zone. must be in (HN1, HN2)
+
     :param availability_zone:
     :return:
     """
@@ -78,6 +84,7 @@ def validate_availability_zone(availability_zone):
 def validate_os_type(os_type):
     """
     Validate os type, must be in (image, snapshot, volume)
+
     :param os_type:
     :return:
     """
@@ -87,6 +94,7 @@ def validate_os_type(os_type):
 def validate_data_disks(data_disks):
     """
     Validate list of addition data disks. Each item must include (type, size)
+
     :param data_disks:
     :return:
     """
@@ -106,6 +114,7 @@ def validate_data_disks(data_disks):
 def validate_firewall_bounds(bounds_rules, name_to_call: str = None):
     """
     Validate list of firewall rules. Each item must include (type, protocol, cidr)
+
     :param bounds_rules:
     :param name_to_call:
     :return:
@@ -128,6 +137,7 @@ def validate_firewall_bounds(bounds_rules, name_to_call: str = None):
 def validate_cloud_server_action(cs_action, name_to_call: str = 'action'):
     """
     Validate cloud server action. Must be in CLOUD_SERVER_ACTIONS
+
     :param cs_action:
     :param name_to_call:
     :return:
@@ -138,6 +148,7 @@ def validate_cloud_server_action(cs_action, name_to_call: str = 'action'):
 def validate_volume_action(volume_action, name_to_call: str = 'type'):
     """
     Validate volume action. Must be in VOLUME_ACTIONS
+
     :param volume_action:
     :param name_to_call:
     :return:

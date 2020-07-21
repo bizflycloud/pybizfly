@@ -10,7 +10,8 @@ class Backup(Listable, Gettable, Creatable, Deletable, Puttable):
 
     def get(self, backup_id: str, *args, **kwargs) -> dict:
         """
-        Get backup
+        Get backup.
+
         :param backup_id: Backup id
         :param args:
         :param kwargs:
@@ -23,6 +24,7 @@ class Backup(Listable, Gettable, Creatable, Deletable, Puttable):
                *args, **kwargs) -> dict:
         """
         Create backup
+
         :param resource_id:
         :param backup_at_time: Create backup at specific hour every day
         :param backup_frequency: Backup frequency
@@ -37,6 +39,7 @@ class Backup(Listable, Gettable, Creatable, Deletable, Puttable):
     def delete(self, backup_id: str, *args, **kwargs) -> dict:
         """
         Delete backup
+
         :param backup_id: Backup id
         :param args:
         :param kwargs:
@@ -49,6 +52,7 @@ class Backup(Listable, Gettable, Creatable, Deletable, Puttable):
             *args, **kwargs) -> dict:
         """
         Overwrite of create an backup
+
         :param backup_id: Backup id
         :param backup_at_time: Create backup at specific hour every day
         :param backup_frequency: Backup frequency

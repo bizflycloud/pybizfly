@@ -13,6 +13,7 @@ class Volume(Listable, Gettable, Creatable, Deletable):
     def list(self, bootable: bool = False, *args, **kwargs) -> list:
         """
         List all volumes
+
         :param bootable: If this is true, list all volumes that able to create cloud server
         :param args:
         :param kwargs:
@@ -25,6 +26,7 @@ class Volume(Listable, Gettable, Creatable, Deletable):
     def get(self, volume_id: str, *args, **kwargs) -> dict:
         """
         Get volume
+
         :param volume_id: Volume id
         :param args:
         :param kwargs:
@@ -37,6 +39,7 @@ class Volume(Listable, Gettable, Creatable, Deletable):
                *args, **kwargs) -> dict:
         """
         Create new volume
+
         :param name: Volume name
         :param volume_size: Volume disk size
         :param snapshot_id:
@@ -55,6 +58,7 @@ class Volume(Listable, Gettable, Creatable, Deletable):
     def delete(self, volume_id: str, *args, **kwargs) -> dict:
         """
         Delete existed volume
+
         :param volume_id: Volume id
         :param args:
         :param kwargs:
@@ -65,6 +69,7 @@ class Volume(Listable, Gettable, Creatable, Deletable):
     def action(self, volume_id: str, request_body: dict = None) -> dict:
         """
         Request action to an individual volume
+
         :param volume_id: Volume id
         :param request_body:
         :return:
@@ -82,6 +87,7 @@ class Volume(Listable, Gettable, Creatable, Deletable):
     def restore_volume(self, volume_id: str, snapshot_id: str) -> dict:
         """
         Restore an volume based on a snapshot
+
         :param volume_id:  Volume id
         :param snapshot_id:  Snapshot id
         :return:
@@ -95,6 +101,7 @@ class Volume(Listable, Gettable, Creatable, Deletable):
     def detach(self, volume_id: str) -> dict:
         """
         Detach an volume
+
         :param volume_id: Volume id
         :return:
         """
@@ -119,6 +126,7 @@ class Volume(Listable, Gettable, Creatable, Deletable):
     def extend(self, volume_id: str, new_size: int) -> dict:
         """
         Extend volume size with addition size in multiple of 10.
+
         :param volume_id: Volume id
         :param new_size: Extended size
         :return:
@@ -140,6 +148,7 @@ class Volume(Listable, Gettable, Creatable, Deletable):
     def __generate_create_volume_request_body(**kwargs) -> dict:
         """
         Create request body for create volume request
+
         :param kwargs:
         :return:
         """
