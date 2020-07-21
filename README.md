@@ -9,7 +9,6 @@ hoặc thông quan mã nguồn
     
     python setup.py install 
 ## Yêu cầu
-Email tài khoản và mật khẩu đăng ký trên trang [BizFly Cloud](https://bizflycloud.vn/)
 
 ## Cấu hình
 ```python  
@@ -17,7 +16,7 @@ import pybizfly
 client = pybizfly.BizFlyClient(email='dungpq@vccloud.vn', password='123456')
 ```
 <h2 id="tính-năng">Tính năng</h2>
-PyBizfly hỗ trợ tất cả các tính năng được cung cấp bởi [BizFly Cloud Cloud Server API](https://support.bizflycloud.vn/api/cloudserver/) cung cấp, bao gồm:
+PyBizfly hỗ trợ tất cả các tính năng được cung cấp bởi [BizFly Cloud Cloud Server API](https://support.bizflycloud.vn/api/cloudserver/)
 
 - [Truy vấn thông tin và quản lý hoạt động cloud server](#cloud-server)
 - [Thiết lập đặt lịch sao lưu cloud server](#backup)
