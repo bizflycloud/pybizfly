@@ -7,7 +7,7 @@ from pybizfly.utils.https import build_uri, HttpRequest
 
 
 class Service(ABC):
-    def __init__(self, auth_token: str, email: str, client=None):
+    def __init__(self, auth_token: str, email: str, region, client=None):
         self.response_content = {}
         self.response_code = None
 
@@ -22,6 +22,7 @@ class Service(ABC):
         self.__parameters = []
         self.__auth_token = auth_token
         self.__email = email
+        self.__region = region
 
     @abstractmethod
     def _create_endpoint(self) -> str:
@@ -69,7 +70,7 @@ class Service(ABC):
         }
 
     def __build_uri(self):
-        base_uri = DASHBOARD_URI.format(self._create_endpoint())
+        base_uri = DASHBOARD_URI.format(self.__region, self._create_endpoint())
         return build_uri(base_uri, sub_endpoints=self.__sub_endpoints, parameters=self.__parameters)
 
     def __flush_request_data(self) -> bool:

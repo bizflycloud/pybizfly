@@ -4,10 +4,11 @@ from pybizfly.utils.authenticator import Authenticator
 
 
 class BizFlyClient(object):
-    def __init__(self, email: str, password: str, access_token: str = None):
+    def __init__(self, email: str, password: str, access_token: str = None, region: str = 'hn'):
         self.__email = email
         self.__password = password
         self.__authenticator = Authenticator(email, password)
+        self.__region = region
 
         if not access_token:
             self.__authorization()
@@ -21,7 +22,7 @@ class BizFlyClient(object):
         Create a new cloud server service instance
         :return:
         """
-        cs = CloudServer(self.__token, self.__email, self)
+        cs = CloudServer(self.__token, self.__email, self.__region, self)
         self.add_subscriber(cs)
         return cs
 
@@ -30,7 +31,7 @@ class BizFlyClient(object):
         Create a new backup service instance
         :return:
         """
-        ba = Backup(self.__token, self.__email, self)
+        ba = Backup(self.__token, self.__email, self.__region, self)
         self.add_subscriber(ba)
         return ba
 
@@ -39,7 +40,7 @@ class BizFlyClient(object):
         Create a new firewall service instance
         :return:
         """
-        fw = Firewall(self.__token, self.__email, self)
+        fw = Firewall(self.__token, self.__email, self.__region, self)
         self.add_subscriber(fw)
         return fw
 
@@ -48,7 +49,7 @@ class BizFlyClient(object):
         Create a new flavor service instance
         :return:
         """
-        fv = Flavor(self.__token, self.__email, self)
+        fv = Flavor(self.__token, self.__email, self.__region, self)
         self.add_subscriber(fv)
         return fv
 
@@ -57,7 +58,7 @@ class BizFlyClient(object):
         Create a new image service instance
         :return:
         """
-        im = Image(self.__token, self.__email, self)
+        im = Image(self.__token, self.__email, self.__region, self)
         self.add_subscriber(im)
         return im
 
@@ -66,7 +67,7 @@ class BizFlyClient(object):
         Create a new key pair service instance
         :return:
         """
-        kp = KeyPair(self.__token, self.__email, self)
+        kp = KeyPair(self.__token, self.__email, self.__region, self)
         self.add_subscriber(kp)
         return kp
 
@@ -75,7 +76,7 @@ class BizFlyClient(object):
         Create a new snapshot service instance
         :return:
         """
-        ss = Snapshot(self.__token, self.__email, self)
+        ss = Snapshot(self.__token, self.__email, self.__region, self)
         self.add_subscriber(ss)
         return ss
 
@@ -84,7 +85,7 @@ class BizFlyClient(object):
         Create a new volume service instance
         :return:
         """
-        vl = Volume(self.__token, self.__email, self)
+        vl = Volume(self.__token, self.__email, self.__region, self)
         self.add_subscriber(vl)
         return vl
 

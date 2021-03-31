@@ -1,4 +1,4 @@
-DASHBOARD_URI = 'https://manage.bizflycloud.vn/iaas-cloud/api/{}'
+DASHBOARD_URI = 'https://{}.manage.bizflycloud.vn/iaas-cloud/api/{}'
 
 TOKEN_ENDPOINTS = 'token'
 

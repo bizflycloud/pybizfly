@@ -13,7 +13,7 @@ class Authenticator(object):
         self.__password = password
 
     def request(self) -> str:
-        token_uri = DASHBOARD_URI.format(TOKEN_ENDPOINTS)
+        token_uri = DASHBOARD_URI.format('hn',TOKEN_ENDPOINTS)
         http_request = HttpRequest(url=token_uri,
                                    method=CREATE,
                                    headers={'content-type': 'application/json'},
