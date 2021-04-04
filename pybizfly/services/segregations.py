@@ -1,9 +1,10 @@
 from abc import ABC, abstractmethod
 
-from pybizfly.constants.api import DASHBOARD_URI
+from pybizfly.constants.api import DASHBOARD_URI, CATALOG_URI, RESOURCE_SERVICES
 from pybizfly.constants.methods import GET, CREATE, UPDATE, DELETE, PUT, METHODS
 from pybizfly.utils.authenticator import Authenticator
 from pybizfly.utils.https import build_uri, HttpRequest
+import requests
 
 
 class Service(ABC):
@@ -70,7 +71,17 @@ class Service(ABC):
         }
 
     def __build_uri(self):
-        base_uri = DASHBOARD_URI.format(self.__region, self._create_endpoint())
+        services_catalog = requests.get(CATALOG_URI).json()['services']
+        hn_service_names = [service['name'] for  service in services_catalog if service['region'] == 'HN']
+        hn_service_urls = [service['service_url'] for  service in services_catalog if service['region'] == 'HN']
+        hcm_service_names = [service['name'] for  service in services_catalog if service['region'] == 'HCM']
+        hcm_service_urls = [service['service_url'] for  service in services_catalog if service['region'] == 'HCM']
+        region_service_map = {
+                "HN": {k:v for k,v in zip(hn_service_names,hn_service_urls)},
+                "HCM": {k:v for k,v in zip(hcm_service_names,hcm_service_urls)},
+                }
+        # base_uri = DASHBOARD_URI.format(self.__region, self._create_endpoint())
+        base_uri = region_service_map[self.__region.upper()][RESOURCE_SERVICES['CLOUD_SERVER']] + '/' + self._create_endpoint()
         return build_uri(base_uri, sub_endpoints=self.__sub_endpoints, parameters=self.__parameters)
 
     def __flush_request_data(self) -> bool:
