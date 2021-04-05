@@ -1,14 +1,25 @@
 from pybizfly.services import *
+from pybizfly.constants.api import CATALOG_URI
+import requests
 from pybizfly.services.segregations import Service
 from pybizfly.utils.authenticator import Authenticator
 
 
 class BizFlyClient(object):
-    def __init__(self, email: str, password: str, access_token: str = None, region: str = 'hn'):
+    def __init__(self, email: str, password: str, access_token: str = None, region: str = 'hn', region_service_map: dict = {}):
+        def _raise_error(error, all_regions):
+            raise error(f"Region must in {all_regions}")
         self.__email = email
         self.__password = password
         self.__authenticator = Authenticator(email, password)
-        self.__region = region
+        services_catalog = requests.get(CATALOG_URI).json()['services']
+        all_regions = set([service['region'] for service in services_catalog])
+        self.__region = region if region.upper() in all_regions else _raise_error(ValueError, all_regions)
+        service_names = [service['name'] for  service in services_catalog if service['region'].upper() == region.upper()]
+        service_urls = [service['service_url'] for  service in services_catalog if service['region'].upper() == region.upper()]
+        self.region_service_map = {
+                region.upper(): {k:v for k,v in zip(service_names,service_urls)},
+                }
 
         if not access_token:
             self.__authorization()
@@ -22,7 +33,7 @@ class BizFlyClient(object):
         Create a new cloud server service instance
         :return:
         """
-        cs = CloudServer(self.__token, self.__email, self.__region, self)
+        cs = CloudServer(self.__token, self.__email, self.__region, self.region_service_map, self, )
         self.add_subscriber(cs)
         return cs
 
@@ -31,7 +42,7 @@ class BizFlyClient(object):
         Create a new backup service instance
         :return:
         """
-        ba = Backup(self.__token, self.__email, self.__region, self)
+        ba = Backup(self.__token, self.__email, self.__region, self.region_service_map, self)
         self.add_subscriber(ba)
         return ba
 
@@ -40,7 +51,7 @@ class BizFlyClient(object):
         Create a new firewall service instance
         :return:
         """
-        fw = Firewall(self.__token, self.__email, self.__region, self)
+        fw = Firewall(self.__token, self.__email, self.__region, self.region_service_map, self)
         self.add_subscriber(fw)
         return fw
 
@@ -49,7 +60,7 @@ class BizFlyClient(object):
         Create a new flavor service instance
         :return:
         """
-        fv = Flavor(self.__token, self.__email, self.__region, self)
+        fv = Flavor(self.__token, self.__email, self.__region, self.region_service_map, self)
         self.add_subscriber(fv)
         return fv
 
@@ -58,7 +69,7 @@ class BizFlyClient(object):
         Create a new image service instance
         :return:
         """
-        im = Image(self.__token, self.__email, self.__region, self)
+        im = Image(self.__token, self.__email, self.__region, self.region_service_map, self)
         self.add_subscriber(im)
         return im
 
@@ -67,7 +78,7 @@ class BizFlyClient(object):
         Create a new key pair service instance
         :return:
         """
-        kp = KeyPair(self.__token, self.__email, self.__region, self)
+        kp = KeyPair(self.__token, self.__email, self.__region, self.region_service_map, self)
         self.add_subscriber(kp)
         return kp
 
@@ -76,7 +87,7 @@ class BizFlyClient(object):
         Create a new snapshot service instance
         :return:
         """
-        ss = Snapshot(self.__token, self.__email, self.__region, self)
+        ss = Snapshot(self.__token, self.__email, self.__region, self.region_service_map, self)
         self.add_subscriber(ss)
         return ss
 
@@ -85,7 +96,7 @@ class BizFlyClient(object):
         Create a new volume service instance
         :return:
         """
-        vl = Volume(self.__token, self.__email, self.__region, self)
+        vl = Volume(self.__token, self.__email, self.__region, self.region_service_map, self)
         self.add_subscriber(vl)
         return vl
 

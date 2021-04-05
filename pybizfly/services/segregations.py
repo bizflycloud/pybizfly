@@ -8,7 +8,7 @@ import requests
 
 
 class Service(ABC):
-    def __init__(self, auth_token: str, email: str, region, client=None):
+    def __init__(self, auth_token: str, email: str, region, region_service_map, client=None):
         self.response_content = {}
         self.response_code = None
 
@@ -24,6 +24,7 @@ class Service(ABC):
         self.__auth_token = auth_token
         self.__email = email
         self.__region = region
+        self.__region_service_map = region_service_map
 
     @abstractmethod
     def _create_endpoint(self) -> str:
@@ -71,17 +72,7 @@ class Service(ABC):
         }
 
     def __build_uri(self):
-        services_catalog = requests.get(CATALOG_URI).json()['services']
-        hn_service_names = [service['name'] for  service in services_catalog if service['region'] == 'HN']
-        hn_service_urls = [service['service_url'] for  service in services_catalog if service['region'] == 'HN']
-        hcm_service_names = [service['name'] for  service in services_catalog if service['region'] == 'HCM']
-        hcm_service_urls = [service['service_url'] for  service in services_catalog if service['region'] == 'HCM']
-        region_service_map = {
-                "HN": {k:v for k,v in zip(hn_service_names,hn_service_urls)},
-                "HCM": {k:v for k,v in zip(hcm_service_names,hcm_service_urls)},
-                }
-        # base_uri = DASHBOARD_URI.format(self.__region, self._create_endpoint())
-        base_uri = region_service_map[self.__region.upper()][RESOURCE_SERVICES['CLOUD_SERVER']] + '/' + self._create_endpoint()
+        base_uri = self.__region_service_map[self.__region.upper()][RESOURCE_SERVICES['CLOUD_SERVER']] + '/' + self._create_endpoint()
         return build_uri(base_uri, sub_endpoints=self.__sub_endpoints, parameters=self.__parameters)
 
     def __flush_request_data(self) -> bool:
