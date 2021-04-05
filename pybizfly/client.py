@@ -8,7 +8,8 @@ from pybizfly.utils.authenticator import Authenticator
 class BizFlyClient(object):
     def __init__(self, email: str, password: str, access_token: str = None, region: str = 'hn', region_service_map: dict = {}):
         def _raise_error(error, all_regions):
-            raise error(f"Region must in {all_regions}")
+            all_regions_lower  = [ region.lower() for region in all_regions]
+            raise error(f"Region must in {all_regions} or {all_regions_lower}")
         self.__email = email
         self.__password = password
         self.__authenticator = Authenticator(email, password)
