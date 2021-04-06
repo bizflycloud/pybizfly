@@ -1,3 +1,4 @@
+from .dns import DNS
 from .backup import Backup
 from .cloud_server import CloudServer
 from .firewall import Firewall
