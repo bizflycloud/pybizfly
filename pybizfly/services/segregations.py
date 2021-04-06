@@ -1,13 +1,14 @@
 from abc import ABC, abstractmethod
 
-from pybizfly.constants.api import DASHBOARD_URI
+from pybizfly.constants.api import DASHBOARD_URI, CATALOG_URI, RESOURCE_SERVICES
 from pybizfly.constants.methods import GET, CREATE, UPDATE, DELETE, PUT, METHODS
 from pybizfly.utils.authenticator import Authenticator
 from pybizfly.utils.https import build_uri, HttpRequest
+import requests
 
 
 class Service(ABC):
-    def __init__(self, auth_token: str, email: str, client=None):
+    def __init__(self, auth_token: str, email: str, region, region_service_map, client=None):
         self.response_content = {}
         self.response_code = None
 
@@ -22,6 +23,8 @@ class Service(ABC):
         self.__parameters = []
         self.__auth_token = auth_token
         self.__email = email
+        self.__region = region
+        self.__region_service_map = region_service_map
 
     @abstractmethod
     def _create_endpoint(self) -> str:
@@ -69,7 +72,7 @@ class Service(ABC):
         }
 
     def __build_uri(self):
-        base_uri = DASHBOARD_URI.format(self._create_endpoint())
+        base_uri = self.__region_service_map[self.__region.upper()][RESOURCE_SERVICES['CLOUD_SERVER']] + '/' + self._create_endpoint()
         return build_uri(base_uri, sub_endpoints=self.__sub_endpoints, parameters=self.__parameters)
 
     def __flush_request_data(self) -> bool:

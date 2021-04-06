@@ -1,4 +1,5 @@
 DASHBOARD_URI = 'https://manage.bizflycloud.vn/iaas-cloud/api/{}'
+CATALOG_URI = 'https://manage.bizflycloud.vn/api/auth/service'
 
 TOKEN_ENDPOINTS = 'token'
 
@@ -11,4 +12,18 @@ RESOURCE_ENDPOINTS = {
     'KEYPAIR': 'keypairs',
     'BACKUP_CALENDAR': 'backup',
     'FIREWALL': 'firewalls'
+}
+
+RESOURCE_SERVICES = {
+    'BUSINESS_EMAIL': 'Business Email',
+    'CLOUD_SERVER': 'Cloud Server',
+    'LOAD_BALANCER': 'Load Balancer',
+    'VPN_SITE_TO_SITE': 'VPN Site to Site',
+    'DNS': 'DNS',
+    'AUTO_SCALING': 'Auto Scaling',
+    'CONTAINER_REGISTRY': 'Container Registry',
+    'SIMPLE_STORAGE': 'Simple Storage',
+    'K8S': 'Kubernetes Engine',
+    'ALERT': 'Alert',
+    'AUTH': 'Auth',
 }
