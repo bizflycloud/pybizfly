@@ -73,6 +73,8 @@ class Service(ABC):
         }
 
     def __build_uri(self):
+        if self.__service_name not in self.__region_service_map[self.__region.upper()].keys():
+            raise KeyError(f"Region {self.__region} is not supporting {self.__service_name} service now.")
         base_uri = self.__region_service_map[self.__region.upper()][self.__service_name] + '/' + self._create_endpoint()
         return build_uri(base_uri, sub_endpoints=self.__sub_endpoints, parameters=self.__parameters)
 

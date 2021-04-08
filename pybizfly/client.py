@@ -36,7 +36,6 @@ class BizFlyClient(object):
         self.add_subscriber(dns)
         return dns
 
-
     def cloud_server(self) -> CloudServer:
         """
         Create a new cloud server service instance

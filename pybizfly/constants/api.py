@@ -12,7 +12,7 @@ RESOURCE_ENDPOINTS = {
     'KEYPAIR': 'keypairs',
     'BACKUP_CALENDAR': 'backup',
     'FIREWALL': 'firewalls',
-	'DNS': 'zone'
+	'DNS': '',
 }
 
 RESOURCE_SERVICES = {
