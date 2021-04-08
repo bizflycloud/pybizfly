@@ -11,7 +11,8 @@ RESOURCE_ENDPOINTS = {
     'SNAPSHOT': 'snapshots',
     'KEYPAIR': 'keypairs',
     'BACKUP_CALENDAR': 'backup',
-    'FIREWALL': 'firewalls'
+    'FIREWALL': 'firewalls',
+	'DNS': '',
 }
 
 RESOURCE_SERVICES = {

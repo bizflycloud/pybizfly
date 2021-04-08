@@ -15,8 +15,8 @@ class CloudServer(Listable, Gettable, Creatable, Deletable):
     Allowing list all servers, get individual server, create new server and delete individual server base on auth token
     """
 
-    def __init__(self, auth_token: str, email: str, region: str = 'hn', region_service_map: dict = {}, client=None):
-        super(CloudServer, self).__init__(auth_token, email, region, region_service_map, client)
+    def __init__(self, auth_token: str, email: str, region: str = 'hn', region_service_map: dict = {}, service_name: str = "Cloud Server", client=None):
+        super(CloudServer, self).__init__(auth_token, email, region, region_service_map, service_name, client)
         self._post_request_body = []
 
     def get(self, server_id: str, *args, **kwargs) -> dict:
