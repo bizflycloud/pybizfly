@@ -1,5 +1,5 @@
 DASHBOARD_URI = 'https://manage.bizflycloud.vn/iaas-cloud/api/{}'
-CATALOG_URI = 'https://manage.bizflycloud.vn/api/auth/service'
+DEFAULT_CATALOG_URI = 'https://manage.bizflycloud.vn/api/auth/service'
 
 TOKEN_ENDPOINTS = 'token'
 

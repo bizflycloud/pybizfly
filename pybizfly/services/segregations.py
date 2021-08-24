@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from pybizfly.constants.api import DASHBOARD_URI, CATALOG_URI, RESOURCE_SERVICES
+from pybizfly.constants.api import DASHBOARD_URI, DEFAULT_CATALOG_URI, RESOURCE_SERVICES
 from pybizfly.constants.methods import GET, CREATE, UPDATE, DELETE, PUT, METHODS
 from pybizfly.utils.authenticator import Authenticator
 from pybizfly.utils.https import build_uri, HttpRequest
