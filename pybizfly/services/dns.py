@@ -34,7 +34,7 @@ class DNS(Listable, Gettable, Creatable, Deletable):
         self._add_sub_endpoint('zone')
         return super(DNS, self).delete(zone_id)
 
-    def add_record(self, name:str,  zone_id: str, _type:str='A', request_body: dict = None, _ttl:int=300) -> dict:
+    def add_record(self, name:str,  zone_id: str, _type:str='A', data=None, routing_policy=None, _ttl:int=300) -> dict:
         self._add_sub_endpoint('zone')
         self._add_sub_endpoint(zone_id)
         self._add_sub_endpoint('record')
@@ -43,8 +43,8 @@ class DNS(Listable, Gettable, Creatable, Deletable):
                     "name": name,
                     "ttl": _ttl,
                     "type": _type,
-                    "data":[ "10.5.23.1", "20.1.1.1" ],
-                    "routing_policy_data": {}}
+                    "data": data,
+                    "routing_policy_data": routing_policy}
                 }
         return super(DNS, self).create()
 
