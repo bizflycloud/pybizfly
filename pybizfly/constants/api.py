@@ -1,7 +1,7 @@
-DASHBOARD_URI = 'https://manage.bizflycloud.vn/iaas-cloud/api/{}'
-DEFAULT_CATALOG_URI = 'https://manage.bizflycloud.vn/api/auth/service'
+DEFAULT_HOST_URI = "https://manage.bizflycloud.vn"
 
-TOKEN_ENDPOINTS = 'token'
+CATALOG_ENDPOINT = '/api/auth/service'
+TOKEN_ENDPOINT = '/api/token'
 
 RESOURCE_ENDPOINTS = {
     'OS_IMAGE': 'os-images',

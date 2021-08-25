@@ -1,19 +1,23 @@
-from pybizfly.constants.api import DASHBOARD_URI, TOKEN_ENDPOINTS
+from urllib.parse import urljoin
+
+from pybizfly.constants.api import TOKEN_ENDPOINT, DEFAULT_HOST_URI
 from pybizfly.constants.methods import CREATE
 from pybizfly.utils.exceptions import AuthenticationException
 from pybizfly.utils.https import HttpRequest
 
 
 class Authenticator(object):
-    def __init__(self, email: str, password: str):
+    def __init__(self, email: str, password: str, host: str = None):
         self.token = ''
         self.request_status = None
         self.new_token_arrived = False
         self.__email = email
         self.__password = password
+        self.__host = host or DEFAULT_HOST_URI
+
 
     def request(self) -> str:
-        token_uri = DASHBOARD_URI.format(TOKEN_ENDPOINTS)
+        token_uri = urljoin(self.__host, TOKEN_ENDPOINT)
         http_request = HttpRequest(url=token_uri,
                                    method=CREATE,
                                    headers={'content-type': 'application/json'},

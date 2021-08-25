@@ -90,6 +90,8 @@ def build_uri(uri: str, sub_endpoints: list, parameters: list):
     """
     parameters = validate_dict_list(parameters)
     sub_endpoints = validate_str_list(sub_endpoints)
+    if uri.endswith('/'):
+        uri = uri[:-1]
     for sub_endpoint in sub_endpoints:
         sub_endpoint = str(sub_endpoint)
         uri += '/{}'.format(sub_endpoint)
