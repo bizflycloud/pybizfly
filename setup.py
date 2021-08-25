@@ -5,7 +5,7 @@ with open('README.md', 'r') as fh:
 
 setuptools.setup(
     name="pybizfly",  # Replace with your own username
-    version="0.0.1",
+    version="0.2.0",
     author="BizFly Cloud",
     author_email="dungpq@vccloud.vn",
     description="BizFly Client in Python",

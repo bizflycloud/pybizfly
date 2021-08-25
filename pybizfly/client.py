@@ -1,27 +1,31 @@
-from pybizfly.services import *
-from pybizfly.constants.api import CATALOG_URI, RESOURCE_SERVICES
 import requests
+from urllib.parse import urljoin
+
+from pybizfly.constants.api import DEFAULT_HOST_URI, RESOURCE_SERVICES, CATALOG_ENDPOINT
+from pybizfly.services import *
 from pybizfly.services.segregations import Service
 from pybizfly.utils.authenticator import Authenticator
 
 
 class BizFlyClient(object):
-    def __init__(self, email: str, password: str, access_token: str = None, region: str = 'hn', region_service_map: dict = {}, service_name: str = "Cloud Server"):
+    def __init__(self, email: str, password: str, access_token: str = None, region: str = 'hn',
+                 region_service_map: dict = {}, service_name: str = "Cloud Server", host_url: str = None):
         def _raise_error(error, all_regions):
-            all_regions_lower  = [ region.lower() for region in all_regions]
+            all_regions_lower = [region.lower() for region in all_regions]
             raise error(f"Region must in {all_regions} or {all_regions_lower}")
+
         self.__email = email
         self.__password = password
-        self.__service_name = service_name 
+        self.__service_name = service_name
+        self.host_url = host_url or DEFAULT_HOST_URI
         self.__authenticator = Authenticator(email, password)
-        services_catalog = requests.get(CATALOG_URI).json()['services']
+        catalog_uri = urljoin(self.host_url, CATALOG_ENDPOINT)
+        services_catalog = requests.get(catalog_uri).json()['services']
         all_regions = set([service['region'] for service in services_catalog])
         self.__region = region if region.upper() in all_regions else _raise_error(ValueError, all_regions)
-        service_names = [service['name'] for  service in services_catalog if service['region'].upper() == region.upper()]
-        service_urls = [service['service_url'] for  service in services_catalog if service['region'].upper() == region.upper()]
-        self.region_service_map = {
-                region.upper(): {k:v for k,v in zip(service_names,service_urls)},
-                }
+        service_names = [service['name'] for service in services_catalog if service['region'].upper() == region.upper()]
+        service_urls = [service['service_url'] for service in services_catalog if service['region'].upper() == region.upper()]
+        self.region_service_map = {region.upper(): {k: v for k, v in zip(service_names, service_urls)}}
 
         if not access_token:
             self.__authorization()
@@ -29,7 +33,7 @@ class BizFlyClient(object):
             self.__token = access_token
 
         self.subscribers = []
-        
+
     def dns(self) -> DNS:
         self.__service_name = RESOURCE_SERVICES['DNS']
         dns = DNS(self.__token, self.__email, self.__region, self.region_service_map, self.__service_name, self)
