@@ -36,5 +36,6 @@ class Authenticator(object):
     def __create_request_body(self) -> dict:
         return {
             'username': self.__email,
-            'password': self.__password
+            'password': self.__password,
+            'auth_method': 'password'
         }
