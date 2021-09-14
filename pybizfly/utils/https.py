@@ -3,6 +3,7 @@ import time
 
 import requests
 
+from pybizfly import exceptions
 from pybizfly.constants.methods import GET, METHODS
 from pybizfly.constants.response_codes import TOO_MANY_REQUEST
 from pybizfly.utils.validators import validate_str_list, validate_dict_list, validate_method
@@ -61,7 +62,8 @@ def _retry_request(num_retry: int, uri: str, method: str, **kwargs):
         response_content = serialize_json(response.content)
         if not _should_retry(response_status):
             break
-
+    if not response.ok:
+        raise exceptions.from_response(response, response_content)
     return response_status, response_content
 
 
