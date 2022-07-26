@@ -75,10 +75,13 @@ def serialize_json(json_content) -> dict:
     :return:
     """
     try:
-        return json.loads(json_content)
+        resp = json.loads(json_content)
+        if isinstance(resp, str):  # if content is string, then wrap it in dict
+            resp = {'message': resp}
     except json.JSONDecodeError:
         # raise error
-        return {"messsage": str(json_content)}
+        resp = {"message": str(json_content)}
+    return resp
 
 
 def build_uri(uri: str, sub_endpoints: list, parameters: list):
